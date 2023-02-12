@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -39,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'applicationLogo' => Storage::url('images/skhc_logo.svg')
         ]);
     }
 }

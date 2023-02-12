@@ -16,5 +16,9 @@
         "tailwindcss": "^3.2.1",
         "vite": "^4.0.0",
         "vue": "^3.2.41"
+    },
+    "dependencies": {
+        "prettier": "^2.8.4",
+        "vue-spinner": "^1.0.4"
     }
 }
