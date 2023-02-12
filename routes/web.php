@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VolunteerController;
+use App\Http\Controllers\VolunteerVerificationTokenController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,10 +14,19 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
-Route::get('/volunteers/create', [VolunteerController::class, 'create'])->name('volunteer.create');
+Route::get('/signup', [VolunteerController::class, 'create'])->name('volunteer.create');
 Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
+
+Route::get('/complete-signup', function() {
+    if (!session()->has('email'))
+        return redirect()->route('home');
+
+    return Inertia::render('CompleteSignup', ['email' => session('email')]);
+})->name('signup.create');
+
+Route::get('/volunteers/verify/{token}', [VolunteerVerificationTokenController::class, 'show'])->name('volunteer-verification-token.show');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

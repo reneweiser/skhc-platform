@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique()->index();
             $table->string('mobile');
             $table->unsignedBigInteger('shirt_size_id');
+            $table->timestamp('verified')->nullable();
             $table->timestamps();
 
             $table->foreign('shirt_size_id')->references('id')->on('shirt_sizes');

@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('assignments', function (Blueprint $table) {
-            $table->id();
+        Schema::create('volunteer_verification_tokens', function (Blueprint $table) {
+            $table->uuid('id');
             $table->unsignedBigInteger('volunteer_id');
-            $table->unsignedBigInteger('shift_id');
             $table->timestamps();
 
             $table->foreign('volunteer_id')->references('id')->on('volunteers')->cascadeOnDelete();
-            $table->foreign('shift_id')->references('id')->on('shifts')->cascadeOnDelete();
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assignments');
+        Schema::dropIfExists('volunteer_verification_tokens');
     }
 };
