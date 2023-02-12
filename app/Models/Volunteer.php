@@ -11,15 +11,15 @@ class Volunteer extends Model
 {
     use HasFactory;
 
-    public function assign(array $dutyIds)
+    public function assign(array $shiftIds)
     {
-        foreach ($dutyIds as $dutyId)
-            $this->assignments()->attach($dutyId);
+        foreach ($shiftIds as $shiftId)
+            $this->assignments()->attach($shiftId);
     }
 
     public function assignments(): BelongsToMany
     {
-        return $this->belongsToMany(Duty::class, 'assignments')
+        return $this->belongsToMany(Shift::class, 'assignments')
             ->using(Assignment::class)
             ->withTimestamps();
     }

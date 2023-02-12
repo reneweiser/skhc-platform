@@ -14,8 +14,8 @@ class StoreVolunteerRequest extends FormRequest
             'email' => ['required', 'email', 'unique:volunteers,email'],
             'mobile' => ['required', 'string'],
             'shirt_size_id' => ['required', 'exists:shirt_sizes,id'],
-            'selected_duties' => 'required|array',
-            'selected_duties.*' => 'exists:duties,id',
+            'selected_shifts' => 'required|array',
+            'selected_shifts.*' => 'exists:shifts,id',
         ];
     }
 
@@ -28,7 +28,7 @@ class StoreVolunteerRequest extends FormRequest
             'email.unique' => 'Diese Email ist schon vorhanden.',
             'mobile.required' => 'Mobile ist Pflichtfeld.',
             'shirt_size.required' => 'T-Shirt Größe ist Pflichtfeld.',
-            'selected_duties.required' => 'Du musst dich für mindestens eine Schicht melden.',
+            'selected_shifts.required' => 'Du musst dich für mindestens eine Schicht melden.',
         ];
     }
 }

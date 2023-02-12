@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ShirtSizeSeeder::class,
             VenueSeeder::class,
-            DutySeeder::class
+            ShiftSeeder::class
         ]);
     }
 }

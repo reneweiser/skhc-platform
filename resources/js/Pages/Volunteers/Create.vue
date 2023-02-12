@@ -10,19 +10,19 @@ const form = useForm({
     email: '',
     mobile: '',
     shirt_size_id: '',
-    selected_duties: [],
+    selected_shifts: [],
 });
 
 const props = defineProps({
     shirtSizes: Array,
-    duties: Array,
+    shifts: Array,
 });
 
-const raceDuties = computed(() =>
-    props.duties.filter((item) => item.venue_id === 1)
+const raceShifts = computed(() =>
+    props.shifts.filter((item) => item.venue_id === 1)
 );
-const partyDuties = computed(() =>
-    props.duties.filter((item) => item.venue_id === 2)
+const partyShifts = computed(() =>
+    props.shifts.filter((item) => item.venue_id === 2)
 );
 
 function handleSubmit() {
@@ -127,46 +127,46 @@ function handleSubmit() {
             <fieldset>
                 <legend>Schichten für Seifenkistenrennen</legend>
                 <label
-                    :for="duty.id"
-                    v-for="duty in raceDuties"
-                    :key="duty.id"
+                    :for="shift.id"
+                    v-for="shift in raceShifts"
+                    :key="shift.id"
                     class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
                 >
                     <input
-                        v-model="form.selected_duties"
+                        v-model="form.selected_shifts"
                         type="checkbox"
                         name="race"
-                        :value="duty.id"
-                        :id="duty.id"
+                        :value="shift.id"
+                        :id="shift.id"
                         class="mr-2"
                     />
-                    {{ duty.name }}
+                    {{ shift.name }}
                 </label>
             </fieldset>
 
             <fieldset>
                 <legend>Schichten für Jubelfeier</legend>
                 <label
-                    :for="duty.id"
-                    v-for="duty in partyDuties"
-                    :key="duty.id"
+                    :for="shift.id"
+                    v-for="shift in partyShifts"
+                    :key="shift.id"
                     class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
                 >
                     <input
-                        v-model="form.selected_duties"
+                        v-model="form.selected_shifts"
                         type="checkbox"
                         name="party"
-                        :value="duty.id"
-                        :id="duty.id"
+                        :value="shift.id"
+                        :id="shift.id"
                         class="mr-2"
                     />
-                    {{ duty.name }}
+                    {{ shift.name }}
                 </label>
             </fieldset>
             <span
                 class="text-red-400"
-                v-if="form.errors.selected_duties"
-                >{{ form.errors.selected_duties }}</span
+                v-if="form.errors.selected_shifts"
+                >{{ form.errors.selected_shifts }}</span
             >
             <button
                 type="submit"

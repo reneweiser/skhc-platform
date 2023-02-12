@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('volunteer_id');
-            $table->unsignedBigInteger('duty_id');
+            $table->unsignedBigInteger('shift_id');
             $table->timestamps();
 
             $table->foreign('volunteer_id')->references('id')->on('volunteers');
-            $table->foreign('duty_id')->references('id')->on('duties');
+            $table->foreign('shift_id')->references('id')->on('shifts');
         });
     }
 

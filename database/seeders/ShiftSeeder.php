@@ -2,19 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\Duty;
+use App\Models\Shift;
 use App\Models\Venue;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DutySeeder extends Seeder
+class ShiftSeeder extends Seeder
 {
     public function run()
     {
         $raceVenue = Venue::where('name', 'Seifenkistenrennen')->first();
         $partyVenue = Venue::where('name', 'Jubelfeier')->first();
 
-        $duties = [
+        $shifts = [
             [ 'name' => 'Aufbau', 'venue_id' => $raceVenue->id, ],
             [ 'name' => 'Abbau', 'venue_id' => $raceVenue->id, ],
             [ 'name' => 'Anmeldung', 'venue_id' => $raceVenue->id, ],
@@ -36,7 +36,7 @@ class DutySeeder extends Seeder
             [ 'name' => 'Fotografen', 'venue_id' => $partyVenue->id, ],
         ];
 
-        foreach ($duties as $duty)
-            Duty::create($duty);
+        foreach ($shifts as $shift)
+            Shift::create($shift);
     }
 }
