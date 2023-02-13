@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\CompleteSignupPromptController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VolunteerController;
-use App\Http\Controllers\VolunteerVerificationTokenController;
+use App\Http\Controllers\VolunteerVerificationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,18 +17,6 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/signup', [VolunteerController::class, 'create'])->name('volunteer.create');
-Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
-
-Route::get('/complete-signup', function() {
-    if (!session()->has('email'))
-        return redirect()->route('home');
-
-    return Inertia::render('CompleteSignup', ['email' => session('email')]);
-})->name('signup.create');
-
-Route::get('/volunteers/verify/{token}', [VolunteerVerificationTokenController::class, 'show'])->name('volunteer-verification-token.show');
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -37,5 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/signup', [VolunteerController::class, 'create'])->name('volunteer.create');
+Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
+
+Route::get('/complete-signup-notice', [CompleteSignupPromptController::class, '__invoke'])->name('volunteer.complete-signup-notice');
+Route::get('/volunteers/verify/{token}', [VolunteerVerificationController::class, '__invoke'])->name('volunteer.verify');
 
 require __DIR__.'/auth.php';

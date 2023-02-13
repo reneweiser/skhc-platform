@@ -16,9 +16,4 @@ class VolunteerVerificationToken extends Model
     {
         return $this->belongsTo(Volunteer::class);
     }
-
-    public function url(): string
-    {
-        return route('volunteer-verification-token.show', $this);
-    }
 }

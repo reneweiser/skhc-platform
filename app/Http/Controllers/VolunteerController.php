@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVolunteerRequest;
-use App\Mail\VolunteerVerificationMail;
 use App\Models\Shift;
 use App\Models\ShirtSize;
-use App\Models\Volunteer;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rule;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 
@@ -25,14 +21,10 @@ class VolunteerController extends Controller
 
     public function store(StoreVolunteerRequest $request): RedirectResponse
     {
-        $volunteer = Volunteer::create($request->safe()->except('selected_shifts'));
-
-        $volunteer->assign($request->safe()->only('selected_shifts'));
-
-        Mail::to($request->safe(['email']))->send(new VolunteerVerificationMail($volunteer->verificationToken));
+        $request->persist();
 
         return redirect()
-            ->route('signup.create')
-            ->with('email', $volunteer->email);
+            ->route('volunteer.complete-signup-notice')
+            ->with('email', $request->email);
     }
 }

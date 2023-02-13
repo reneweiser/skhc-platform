@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Mail\VolunteerVerificationMail;
+use App\Models\Volunteer;
+use App\Models\VolunteerVerificationToken;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Mail;
 
 class StoreVolunteerRequest extends FormRequest
 {
@@ -30,5 +34,18 @@ class StoreVolunteerRequest extends FormRequest
             'shirt_size.required' => 'T-Shirt Größe ist Pflichtfeld.',
             'selected_shifts.required' => 'Du musst dich für mindestens eine Schicht melden.',
         ];
+    }
+
+    public function persist()
+    {
+        $volunteer = Volunteer::create($this->safe()->except('selected_shifts'));
+
+        $volunteer->assign($this->safe()->only('selected_shifts'));
+
+        $token = VolunteerVerificationToken::create([
+            'volunteer_id' => $volunteer->id
+        ]);
+
+        Mail::to($this->safe()['email'])->send(new VolunteerVerificationMail($token));
     }
 }

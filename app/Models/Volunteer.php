@@ -12,17 +12,6 @@ class Volunteer extends Model
 {
     use HasFactory;
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::created(function(Volunteer $volunteer) {
-            VolunteerVerificationToken::create([
-                'volunteer_id' => $volunteer->id
-            ]);
-        });
-    }
-
     public function assign(array $shiftIds)
     {
         foreach ($shiftIds as $shiftId)
@@ -40,10 +29,5 @@ class Volunteer extends Model
     {
         $this->verified = now();
         $this->save();
-    }
-
-    public function verificationToken(): HasOne
-    {
-        return $this->hasOne(VolunteerVerificationToken::class);
     }
 }
