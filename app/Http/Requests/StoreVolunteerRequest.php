@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Mail\VolunteerVerificationMail;
+use App\Mail\VolunteerCreated;
 use App\Models\Volunteer;
 use App\Models\VolunteerVerificationToken;
 use Illuminate\Foundation\Http\FormRequest;
@@ -46,6 +46,6 @@ class StoreVolunteerRequest extends FormRequest
             'volunteer_id' => $volunteer->id
         ]);
 
-        Mail::to($this->safe()['email'])->send(new VolunteerVerificationMail($token));
+        Mail::to($this->safe()['email'])->send(new VolunteerCreated($token));
     }
 }

@@ -2,7 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Mail\VolunteerVerificationMail;
+use App\Mail\VolunteerCreated;
+use App\Mail\VolunteerVerified;
 use App\Models\Shift;
 use App\Models\ShirtSize;
 use App\Models\Volunteer;
@@ -66,7 +67,7 @@ class SignupTest extends TestCase
 
         $this->createVolunteer();
 
-        Mail::assertSent(VolunteerVerificationMail::class, function($mail) {
+        Mail::assertSent(VolunteerCreated::class, function($mail) {
             return $mail->hasTo('example@test.com');
         });
     }
@@ -83,6 +84,21 @@ class SignupTest extends TestCase
 
         $this->assertDatabaseCount('volunteer_verification_tokens', 0);
         $this->assertNotNull(Volunteer::first()->verified);
+    }
+
+    /**
+     * @test
+     */
+    public function it_sends_a_verification_notice_when_a_volunteer_is_verified()
+    {
+        Mail::fake();
+
+        $this->createVolunteer();
+        $token = VolunteerVerificationToken::first();
+
+        $this->get(route('volunteer.verify', $token));
+
+        Mail::assertSent(VolunteerVerified::class);
     }
 
     protected function createVolunteer()

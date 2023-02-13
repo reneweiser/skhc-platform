@@ -2,37 +2,38 @@
 
 namespace App\Mail;
 
-use App\Models\VolunteerVerificationToken;
+use App\Models\Volunteer;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VolunteerVerificationMail extends Mailable
+class VolunteerVerified extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public VolunteerVerificationToken $token;
+    public Volunteer $volunteer;
 
-    public function __construct(VolunteerVerificationToken $token)
+    public function __construct(Volunteer $volunteer)
     {
-        $this->token = $token;
+        $this->volunteer = $volunteer;
     }
 
-    public function envelope(): Envelope
+    public function envelope()
     {
         return new Envelope(
             from: new Address('signup@skhc.de'),
-            subject: 'Bestätige deine Anmeldung',
+            subject: 'Du hast dich erfolgreich fürs SKHC angemeldet',
         );
     }
 
-    public function content(): Content
+    public function content()
     {
         return new Content(
-            view: 'emails.signups.verify',
+            view: 'emails.signups.success',
         );
     }
 }
