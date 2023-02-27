@@ -8,6 +8,7 @@ use App\Models\Shift;
 use App\Models\ShirtSize;
 use App\Models\Volunteer;
 use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 
@@ -34,6 +35,6 @@ class VolunteerController extends Controller
     {
         $request->persist($volunteer);
 
-        return redirect()->route('home');
+        return Inertia::render('InformationUpdatedNotice');
     }
 }

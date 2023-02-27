@@ -31,6 +31,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/*
+ * - Person signs up
+ *   - They get an email with a link to verify their signup
+ *   - They are redirected to a "complete signup notice"
+ * - When visiting the link they get redirected to a
+ */
+
 Route::get('/signup', [VolunteerController::class, 'create'])->name('volunteer.create');
 Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
 Route::put('/volunteers/{volunteer}', [VolunteerController::class, 'update'])->name('volunteer.update');

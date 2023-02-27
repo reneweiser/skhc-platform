@@ -40,7 +40,7 @@ class StoreVolunteerRequest extends FormRequest
     {
         $volunteer = Volunteer::create($this->safe()->except('selected_shifts'));
 
-        $volunteer->assign($this->safe()->only('selected_shifts'));
+        $volunteer->assign($this->safe()->only('selected_shifts')['selected_shifts']);
 
         $token = VolunteerVerificationToken::create([
             'volunteer_id' => $volunteer->id
