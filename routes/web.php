@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/signup', [VolunteerController::class, 'create'])->name('volunteer.create');
 Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
 Route::put('/volunteers/{volunteer}', [VolunteerController::class, 'update'])->name('volunteer.update');
+Route::delete('/volunteers/{volunteer}', [VolunteerController::class, 'destroy'])->name('volunteer.destroy');
 
 Route::get('/complete-signup-notice', [CompleteSignupPromptController::class, '__invoke'])->name('volunteer.complete-signup-notice');
 Route::get('/volunteers/verify/{token}', [VolunteerVerificationController::class, '__invoke'])->name('volunteer.verify');

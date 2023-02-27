@@ -37,4 +37,12 @@ class VolunteerController extends Controller
 
         return Inertia::render('InformationUpdatedNotice');
     }
+
+    public function destroy(Volunteer $volunteer)
+    {
+        $email = $volunteer->email;
+        $volunteer->delete();
+
+        return Inertia::render('VolunteerDeletedNotice', ['email' => $email]);
+    }
 }

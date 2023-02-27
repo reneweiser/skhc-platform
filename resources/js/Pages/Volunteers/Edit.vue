@@ -2,7 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import PacmanLoader from 'vue-spinner/src/PacmanLoader.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     volunteer: Object,
@@ -21,6 +21,12 @@ const form = useForm({
     ),
 });
 
+const deleteForm = useForm({
+    volunteerId: props.volunteer.data.id,
+});
+
+const showModal = ref(false);
+
 const raceShifts = computed(() =>
     props.shifts.filter((item) => item.venue_id === 1)
 );
@@ -30,6 +36,10 @@ const partyShifts = computed(() =>
 
 function handleSubmit() {
     form.put(route('volunteer.update', props.volunteer.data));
+}
+
+function handleDeleteRequest() {
+    form.delete(route('volunteer.destroy', props.volunteer.data));
 }
 </script>
 
@@ -172,6 +182,7 @@ function handleSubmit() {
                 v-if="form.errors.selected_shifts"
                 >{{ form.errors.selected_shifts }}</span
             >
+
             <button
                 type="submit"
                 class="bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center disabled:opacity-25"
@@ -185,5 +196,47 @@ function handleSubmit() {
                 />
             </button>
         </form>
+
+        <button
+            @click="showModal = true"
+            class="w-full mt-6 bg-white border border-red-600 h-16 text-red-600 font-bold rounded-lg flex justify-center items-center disabled:opacity-25"
+        >
+            Daten löschen
+        </button>
+
+        <Teleport to="body">
+            <div
+                v-if="showModal"
+                class="p-6 fixed top-0 h-screen w-full bg-white flex flex-col justify-center"
+            >
+                <div class="max-w-screen-sm mx-auto flex flex-col space-y-6">
+                    <p class="text-center text-2xl">
+                        Bist du sicher, dass du deine Daten löschen willst?
+                    </p>
+                    <form @submit.prevent="handleDeleteRequest">
+                        <button
+                            type="submit"
+                            :disabled="deleteForm.processing"
+                            class="w-full bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center"
+                        >
+                            <span v-if="!form.processing"
+                                >Ja, bitte lösche meine Daten.</span
+                            >
+                            <PacmanLoader
+                                v-else
+                                color="#fff"
+                                class="scale-50"
+                            />
+                        </button>
+                    </form>
+                    <button
+                        @click="showModal = false"
+                        class="w-full bg-white border border-red-600 h-16 text-red-600 font-bold rounded-lg flex justify-center items-center"
+                    >
+                        Nein
+                    </button>
+                </div>
+            </div>
+        </Teleport>
     </GuestLayout>
 </template>
