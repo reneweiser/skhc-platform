@@ -14,7 +14,7 @@ class VolunteerVerificationController extends Controller
     {
         $token->volunteer->verify();
         Mail::to($token->volunteer->email)->send(new VolunteerVerified($token->volunteer));
-//        $token->delete();
+        $token->delete();
 
         return Inertia::render('VerificationSuccessfulNotice', ['volunteer' => $token->volunteer]);
     }
