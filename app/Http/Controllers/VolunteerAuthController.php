@@ -11,12 +11,10 @@ use Inertia\Response;
 
 class VolunteerAuthController extends Controller
 {
-    public function __invoke(EditToken $token): Response
+    public function __invoke(EditToken $token)
     {
-        $volunteer = $token->volunteer->with('assignments')->first();
-
         return Inertia::render('Volunteers/Edit', [
-            'volunteer' => VolunteerResource::make($volunteer),
+            'volunteer' => VolunteerResource::make($token->volunteer),
             'shirtSizes' => ShirtSize::all(),
             'shifts' => Shift::all()
         ]);

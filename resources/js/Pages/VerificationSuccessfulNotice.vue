@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/vue3';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 
 defineProps({
-    volunteer: Object,
+    email: String,
 });
 
 const editDataRoute = route('edit-token.create');
@@ -22,9 +22,8 @@ const editDataRoute = route('edit-token.create');
                 class="font-bold text-sky-800"
                 >temporären Zugang</a
             >
-            anfordern. Gib dort deine hinterlegte Email Adresse "{{
-                volunteer.email
-            }}" an.
+            anfordern. Gib dort deine hinterlegte Email Adresse "{{ email }}"
+            an.
         </p>
     </GuestLayout>
 </template>
