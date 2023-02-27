@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\CompleteSignupPromptController;
+use App\Http\Controllers\CreateEditTokenController;
+use App\Http\Controllers\StoreEditTokenController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VolunteerAuthController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\VolunteerVerificationController;
 use Illuminate\Foundation\Application;
@@ -9,12 +12,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('volunteer.create');
+//    return Inertia::render('Welcome', [
+//        'canLogin' => Route::has('login'),
+//        'canRegister' => Route::has('register'),
+//        'laravelVersion' => Application::VERSION,
+//        'phpVersion' => PHP_VERSION,
+//    ]);
 })->name('home');
 
 Route::get('/dashboard', function () {
@@ -29,8 +33,13 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/signup', [VolunteerController::class, 'create'])->name('volunteer.create');
 Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
+Route::put('/volunteers/{volunteer}', [VolunteerController::class, 'update'])->name('volunteer.update');
 
 Route::get('/complete-signup-notice', [CompleteSignupPromptController::class, '__invoke'])->name('volunteer.complete-signup-notice');
 Route::get('/volunteers/verify/{token}', [VolunteerVerificationController::class, '__invoke'])->name('volunteer.verify');
+Route::get('/volunteers/auth/{token}', [VolunteerAuthController::class, '__invoke'])->name('volunteer.login');
+
+Route::get('/edit-token/create', [CreateEditTokenController::class, '__invoke'])->name('edit-token.create');
+Route::post('/edit-token', [StoreEditTokenController::class, '__invoke'])->name('edit-token.store');
 
 require __DIR__.'/auth.php';

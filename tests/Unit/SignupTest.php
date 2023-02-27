@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Mail\VolunteerCreated;
 use App\Mail\VolunteerVerified;
+use App\Models\EditToken;
 use App\Models\Shift;
 use App\Models\ShirtSize;
 use App\Models\Volunteer;
@@ -95,10 +96,28 @@ class SignupTest extends TestCase
 
         $this->createVolunteer();
         $token = VolunteerVerificationToken::first();
-
         $this->get(route('volunteer.verify', $token));
 
         Mail::assertSent(VolunteerVerified::class);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_temporary_access_to_edit_data()
+    {
+        $this->createVolunteer();
+        $token = VolunteerVerificationToken::first();
+        $this->get(route('volunteer.verify', $token));
+
+        $this->post(route('edit-token.store'), [ 'email' => 'example@test.com' ]);
+
+        $this->assertDatabaseCount('edit_tokens', 1);
+
+        tap(EditToken::first(), function (EditToken $token) {
+            $this->assertEquals('example@test.com', $token->email);
+            $this->assertNotNull($token->volunteer);
+        });
     }
 
     protected function createVolunteer()

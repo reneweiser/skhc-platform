@@ -11,7 +11,7 @@ Hier sind die Schichten, für die du dich angemeldet hast.
 
 Dein T-Shirt kannst du dir da und da abholen.
 
-Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="#">hier einen temporären Zugang generieren</a>.
+Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="{{route('edit-token.create')}}">hier einen temporären Zugang generieren</a>.
 
 Wenn du weitere Fragen hast, lass sie uns über info@skhc.de wissen.
 
