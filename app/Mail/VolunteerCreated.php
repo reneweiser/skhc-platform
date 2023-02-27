@@ -14,17 +14,16 @@ class VolunteerCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public VolunteerVerificationToken $token;
+    public string $link;
 
     public function __construct(VolunteerVerificationToken $token)
     {
-        $this->token = $token;
+        $this->link = route('volunteer.verify', $token);
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('signup@skhc.de'),
             subject: 'Bestätige deine Anmeldung',
         );
     }

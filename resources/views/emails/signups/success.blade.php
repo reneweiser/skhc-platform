@@ -1,21 +1,36 @@
-Hi {{$volunteer->first_name}},
+<h1>Hi {{$volunteer->first_name}},</h1>
 
-deine Anmeldung war erfolgreich! Wir freuen uns schon dich kennen zu lernen.
+<p>
+    deine Anmeldung war erfolgreich! Wir freuen uns schon dich kennen zu lernen.
+</p>
 
-Hier sind die Schichten, für die du dich angemeldet hast.
+<p>
+    Hier sind die Schichten, für die du dich angemeldet hast.
+</p>
 
-@foreach($volunteer->assignments as $shift)
-    - {{$shift->name}} ({{$shift->venue->name}})
+<ul>
+    @foreach($volunteer->assignments as $shift)
+        <li>{{$shift->name}} ({{$shift->venue->name}})</li>
+    @endforeach
+</ul>
 
-@endforeach
+<p>
+    Dein T-Shirt kannst du dir im //LOCATION// abholen.
+</p>
 
-Dein T-Shirt kannst du dir da und da abholen.
+<p>
+    Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="{{ $createEditTokenRoute }}">hier einen temporären Zugang generieren</a>.
+</p>
 
-Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="{{route('edit-token.create')}}">hier einen temporären Zugang generieren</a>.
+<p>
+    Wenn du weitere Fragen hast, lass sie unser <a href="mailto:organisation@orga-skhc.de">Orga-Team</a> wissen.
+</p>
 
-Wenn du weitere Fragen hast, lass sie uns über info@skhc.de wissen.
+<p>
+    Ansonsten sehen wir uns beim Rennen!
+</p>
 
-Ansonsten sehen wir uns beim Rennen!
-
-Viele Grüße,
-SKHC Orga
+<p>
+    Viele Grüße,<br>
+    SKHC Orga
+</p>

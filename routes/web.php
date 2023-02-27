@@ -7,7 +7,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VolunteerAuthController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\VolunteerVerificationController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -31,20 +30,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-/*
- * - Person signs up
- *   - They get an email with a link to verify their signup
- *   - They are redirected to a "complete signup notice"
- * - When visiting the link they get redirected to a
- */
-
 Route::get('/signup', [VolunteerController::class, 'create'])->name('volunteer.create');
 Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
 Route::put('/volunteers/{volunteer}', [VolunteerController::class, 'update'])->name('volunteer.update');
 
 Route::get('/complete-signup-notice', [CompleteSignupPromptController::class, '__invoke'])->name('volunteer.complete-signup-notice');
 Route::get('/volunteers/verify/{token}', [VolunteerVerificationController::class, '__invoke'])->name('volunteer.verify');
-Route::get('/volunteers/auth/{token}', [VolunteerAuthController::class, '__invoke'])->name('volunteer.login');
+Route::get('/volunteers/auth/{token}', [VolunteerAuthController::class, '__invoke'])->name('volunteer.authenticate');
 
 Route::get('/edit-token/create', [CreateEditTokenController::class, '__invoke'])->name('edit-token.create');
 Route::post('/edit-token', [StoreEditTokenController::class, '__invoke'])->name('edit-token.store');

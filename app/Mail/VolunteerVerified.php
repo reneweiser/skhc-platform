@@ -16,16 +16,17 @@ class VolunteerVerified extends Mailable
     use Queueable, SerializesModels;
 
     public Volunteer $volunteer;
+    public string $createEditTokenRoute;
 
     public function __construct(Volunteer $volunteer)
     {
         $this->volunteer = $volunteer;
+        $this->createEditTokenRoute = route('edit-token.create');
     }
 
     public function envelope()
     {
         return new Envelope(
-            from: new Address('signup@skhc.de'),
             subject: 'Du hast dich erfolgreich fürs SKHC angemeldet',
         );
     }

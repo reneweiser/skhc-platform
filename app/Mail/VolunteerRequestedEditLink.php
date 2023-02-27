@@ -18,7 +18,7 @@ class VolunteerRequestedEditLink extends Mailable
 
     public function __construct(EditToken $token)
     {
-        $this->link = route('volunteer.login', $token);
+        $this->link = route('volunteer.authenticate', $token);
     }
 
     public function envelope()

@@ -1,1 +1,3 @@
-Bitte klicke den nachfolgenden Link: {{route('volunteer.verify', $token)}}
+<p>
+    Bitte klicke den nachfolgenden Link: {{ $link }}
+</p>
