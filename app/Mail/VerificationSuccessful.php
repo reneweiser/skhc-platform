@@ -4,14 +4,12 @@ namespace App\Mail;
 
 use App\Models\Volunteer;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VolunteerVerified extends Mailable
+class VerificationSuccessful extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -34,7 +32,7 @@ class VolunteerVerified extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.signups.success',
+            view: 'emails.verification.successful',
         );
     }
 }

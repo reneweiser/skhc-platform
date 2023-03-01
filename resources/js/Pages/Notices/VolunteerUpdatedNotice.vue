@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/vue3';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 
 defineProps({
-    volunteer: Object,
+    email: String,
 });
 
 const editDataRoute = route('edit-token.create');

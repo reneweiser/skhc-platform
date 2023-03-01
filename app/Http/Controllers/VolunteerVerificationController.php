@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\VolunteerVerified;
+use App\Mail\VerificationSuccessful;
 use App\Models\VolunteerVerificationToken;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class VolunteerVerificationController extends Controller
 {
-    public function __invoke(VolunteerVerificationToken $token): Response
+    public function __invoke(VolunteerVerificationToken $token): RedirectResponse
     {
         $token->volunteer->verify();
         $email = $token->volunteer->email;
-        Mail::to($email)->send(new VolunteerVerified($token->volunteer));
+
+        Mail::to($email)->send(new VerificationSuccessful($token->volunteer));
+
         $token->delete();
 
-        return Inertia::render('VerificationSuccessfulNotice', ['email' => $email]);
+        return redirect()
+            ->route('volunteer.successful.notice')
+            ->with('email', $email);
     }
 }

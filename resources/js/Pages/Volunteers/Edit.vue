@@ -41,12 +41,14 @@ function handleSubmit() {
 function handleDeleteRequest() {
     form.delete(route('volunteer.destroy', props.volunteer.data));
 }
+
+const headline = `Daten für ${props.volunteer.data.first_name} ändern`;
 </script>
 
 <template>
-    <Head title="Für Schicht anmelden" />
+    <Head :title="headline" />
     <GuestLayout>
-        <h1 class="text-xl text-center mb-6">Für Schicht anmelden</h1>
+        <h1 class="text-xl text-center mb-6">{{ headline }}</h1>
         <form
             class="flex flex-col space-y-4"
             @submit.prevent="handleSubmit"

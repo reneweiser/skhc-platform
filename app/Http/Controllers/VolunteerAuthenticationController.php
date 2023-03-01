@@ -9,9 +9,9 @@ use App\Models\ShirtSize;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class VolunteerAuthController extends Controller
+class VolunteerAuthenticationController extends Controller
 {
-    public function __invoke(EditToken $token)
+    public function __invoke(EditToken $token): Response
     {
         return Inertia::render('Volunteers/Edit', [
             'volunteer' => VolunteerResource::make($token->volunteer),

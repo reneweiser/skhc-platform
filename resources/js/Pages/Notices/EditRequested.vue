@@ -5,14 +5,14 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 defineProps({
     email: String,
 });
+
+const headline = 'Du hast deinen persönlichen Zugang erneut angefordert';
 </script>
 
 <template>
-    <Head title="Schau in dein Postfach" />
+    <Head :title="headline" />
     <GuestLayout>
-        <h1 class="text-xl text-center mb-6">
-            Wir haben dir eine Email geschickt
-        </h1>
+        <h1 class="text-xl text-center mb-6">{{ headline }}</h1>
         <p>
             Bitte klicke den Link in der Email, die wir dir an dein Postfach "{{
                 email

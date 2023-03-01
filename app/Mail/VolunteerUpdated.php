@@ -2,36 +2,35 @@
 
 namespace App\Mail;
 
-use App\Models\VolunteerVerificationToken;
+use App\Models\Volunteer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VolunteerCreated extends Mailable
+class VolunteerUpdated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public string $link;
+    public Volunteer $volunteer;
 
-    public function __construct(VolunteerVerificationToken $token)
+    public function __construct(Volunteer $volunteer)
     {
-        $this->link = route('volunteer.verify', $token);
+        $this->volunteer = $volunteer;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bestätige deine Anmeldung',
+            subject: 'Du hast deine Daten erfolgreich geändert',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.signups.verify',
+            view: 'emails.volunteers.updated',
         );
     }
 }

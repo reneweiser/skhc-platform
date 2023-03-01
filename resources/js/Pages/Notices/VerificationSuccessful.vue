@@ -7,13 +7,14 @@ defineProps({
 });
 
 const editDataRoute = route('edit-token.create');
+const headline = 'Deine Registrierung ist jetzt abgeschlossen';
 </script>
 
 <template>
-    <Head title="Deine Registrierung ist jetzt abgeschlossen" />
+    <Head :title="headline" />
     <GuestLayout>
         <h1 class="text-xl text-center mb-6">
-            Deine Registrierung ist jetzt abgeschlossen
+            {{ headline }}
         </h1>
         <p>
             Wenn du deine Daten ändern willst, kannst du einen

@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Mail\VolunteerCreated;
+use App\Mail\VerificationRequested;
+use App\Mail\VolunteerUpdated;
 use App\Models\Volunteer;
 use App\Models\VolunteerVerificationToken;
 use Illuminate\Foundation\Http\FormRequest;
@@ -40,5 +41,7 @@ class UpdateVolunteerRequest extends FormRequest
         $volunteer->update($this->safe()->except('selected_shifts'));
 
         $volunteer->assign($this->safe()->only('selected_shifts')['selected_shifts']);
+
+        Mail::to($volunteer->email)->send(new VolunteerUpdated($volunteer));
     }
 }

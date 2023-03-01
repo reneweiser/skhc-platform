@@ -19,7 +19,7 @@
 </p>
 
 <p>
-    Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="{{ $createEditTokenRoute }}">hier einen temporären Zugang generieren</a>.
+    Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="{{ $createEditTokenRoute }}">hier einen Zugang generieren</a>.
 </p>
 
 <p>
