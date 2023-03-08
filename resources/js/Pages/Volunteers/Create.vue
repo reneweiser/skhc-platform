@@ -21,6 +21,7 @@ const props = defineProps({
 const raceShifts = computed(() =>
     props.shifts.filter((item) => item.venue_id === 1)
 );
+
 const partyShifts = computed(() =>
     props.shifts.filter((item) => item.venue_id === 2)
 );
@@ -115,7 +116,7 @@ function handleSubmit() {
                         :key="size.id"
                         :value="size.id"
                     >
-                        {{ size.name }}
+                        {{ size.name.toUpperCase() }}
                     </option>
                 </select>
                 <span
