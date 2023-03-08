@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\EditTokenCreatedController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VolunteerDeletedController;
 use App\Http\Controllers\EditTokenController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VerificationSuccessfulController;
 use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VerificationRequestedController;
@@ -11,9 +11,8 @@ use App\Http\Controllers\VolunteerAuthenticationController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\VolunteerVerificationController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', fn () => redirect()->route('volunteer.create'))->name('home');
+Route::get('/', [HomeController::class, '__invoke'])->name('home');
 Route::get('/signup', fn () => redirect()->route('volunteer.create'))->name('signup');
 
 Route::get('/volunteers/create', [VolunteerController::class, 'create'])->name('volunteer.create');
