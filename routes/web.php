@@ -34,7 +34,7 @@ Route::post('/edit-tokens', [EditTokenController::class, 'store'])->name('edit-t
 Route::delete('/edit-tokens/{token}', [EditTokenController::class, 'destroy'])->name('edit-token.destroy');
 Route::get('/edit-token-created-notice', [EditTokenCreatedController::class, '__invoke'])->name('edit-token.created.notice');
 
-Route::get('/process-expired', fn () => ['message' => 'process expired'])->name('process.expired');
+Route::get('/process-expired', fn () => inertia('ProcessExpired'))->name('process.expired');
 
 //Route::get('/', function () {
 //    return Inertia::render('Welcome', [

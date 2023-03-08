@@ -65,7 +65,7 @@ const headline = 'SpaceKidHeadCup';
 
 <style>
 p {
-    @apply mb-4;
+    @apply mb-12;
 }
 
 a[data-cta] {
