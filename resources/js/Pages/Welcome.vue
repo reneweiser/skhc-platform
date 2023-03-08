@@ -19,7 +19,7 @@ const headline = 'SpaceKidHeadCup';
             Nur, ohne Dich klappt es nicht. Um das Rennen für Klein & Groß
             austragen zu können, benötigen wir deine Hilfe.
         </p>
-        <span>Registriere dich jetzt für eine Schicht?</span>
+        <span>Registriere dich jetzt für eine Schicht!</span>
         <Link
             :href="route('volunteer.create')"
             class="bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center"
