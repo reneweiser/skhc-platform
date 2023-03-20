@@ -30,7 +30,7 @@
 
 <ul>
     @foreach($volunteer->assignments as $shift)
-        <li>{{$shift->name}} ({{$shift->venue->name}})</li>
+        <li>{{$shift->name}} ({{$shift->event->name}})</li>
     @endforeach
 </ul>
 

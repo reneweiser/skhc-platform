@@ -2,7 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import PacmanLoader from 'vue-spinner/src/PacmanLoader.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { computed } from 'vue';
+import {groupBy} from 'lodash';
 
 const form = useForm({
     first_name: '',
@@ -16,15 +16,10 @@ const form = useForm({
 const props = defineProps({
     shirtSizes: Array,
     shifts: Array,
+    spots: Array,
 });
 
-const raceShifts = computed(() =>
-    props.shifts.filter((item) => item.venue_id === 1)
-);
-
-const partyShifts = computed(() =>
-    props.shifts.filter((item) => item.venue_id === 2)
-);
+const events = groupBy(props.shifts.data, shift => shift.event_name);
 
 function handleSubmit() {
     form.post(route('volunteer.store'));
@@ -125,45 +120,35 @@ function handleSubmit() {
                     >{{ form.errors.shirt_size }}</span
                 >
             </label>
-            <fieldset>
-                <legend>Schichten für Seifenkistenrennen</legend>
-                <label
-                    :for="shift.id"
-                    v-for="shift in raceShifts"
-                    :key="shift.id"
-                    class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
-                >
-                    <input
-                        v-model="form.selected_shifts"
-                        type="checkbox"
-                        name="race"
-                        :value="shift.id"
-                        :id="shift.id"
-                        class="mr-2"
-                    />
-                    {{ shift.name }}
-                </label>
-            </fieldset>
 
-            <fieldset>
-                <legend>Schichten für Jubelfeier</legend>
-                <label
-                    :for="shift.id"
-                    v-for="shift in partyShifts"
-                    :key="shift.id"
-                    class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
-                >
-                    <input
-                        v-model="form.selected_shifts"
-                        type="checkbox"
-                        name="party"
-                        :value="shift.id"
-                        :id="shift.id"
-                        class="mr-2"
-                    />
-                    {{ shift.name }}
-                </label>
-            </fieldset>
+            <div class="mt-4" v-for="(shifts, eventTitle) in events">
+                <h3>{{eventTitle}}</h3>
+                <div class="flex flex-col">
+                    <div class="py-4" v-for="shift in shifts" :key="shift.id">
+                        <h4>{{shift.name}}</h4>
+                        <fieldset>
+                            <label
+                                :for="time.id"
+                                v-for="time in shift.times"
+                                :key="time.id"
+                                class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
+                            >
+                                <input
+                                    v-model="form.selected_shifts"
+                                    type="checkbox"
+                                    name="race"
+                                    :value="time.id"
+                                    :id="time.id"
+                                    class="mr-2"
+                                />
+                                {{ time.label }}
+                            </label>
+                        </fieldset>
+                        <div class="shift-description" v-html="shift.description"></div>
+                    </div>
+                </div>
+            </div>
+            
             <span
                 class="text-red-400"
                 v-if="form.errors.selected_shifts"
@@ -184,3 +169,13 @@ function handleSubmit() {
         </form>
     </GuestLayout>
 </template>
+
+<style>
+.shift-description p {
+    @apply mb-4;
+}
+
+.shift-description ul {
+    @apply list-disc list-inside mb-4;
+}
+</style>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
+use App\Http\Resources\ShiftResource;
 use App\Http\Resources\VolunteerResource;
 use App\Mail\VolunteerDeleted;
 use App\Models\EditToken;
@@ -11,6 +12,8 @@ use App\Models\Shift;
 use App\Models\ShirtSize;
 use App\Models\Volunteer;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -20,9 +23,16 @@ class VolunteerController extends Controller
     public function create(): Response|ResponseFactory
     {
         $shirtSizes = ShirtSize::all();
-        $shifts = Shift::with('venue')->get();
 
-        return inertia('Volunteers/Create', compact('shirtSizes', 'shifts'));
+        $shifts = ShiftResource::collection(Shift::all());
+
+        $spots = DB::table('shift_times')
+            ->join('assignments', 'assignments.shift_time_id', '=', 'shift_times.id')
+            ->select('shift_times.id as shift_time_id', DB::raw('count(*) as signed_up'))
+            ->groupBy('shift_time_id')
+            ->get();
+
+        return inertia('Volunteers/Create', compact('shirtSizes', 'shifts', 'spots'));
     }
 
     public function store(StoreVolunteerRequest $request): RedirectResponse

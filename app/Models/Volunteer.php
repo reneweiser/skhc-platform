@@ -20,7 +20,7 @@ class Volunteer extends Model
 
     public function assignments(): BelongsToMany
     {
-        return $this->belongsToMany(Shift::class, 'assignments')
+        return $this->belongsToMany(ShiftTime::class, 'assignments')
             ->using(Assignment::class)
             ->withTimestamps();
     }

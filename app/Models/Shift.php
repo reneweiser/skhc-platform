@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Shift extends Model
 {
@@ -12,8 +13,13 @@ class Shift extends Model
 
     public $timestamps = false;
 
-    public function venue(): BelongsTo
+    public function event(): BelongsTo
     {
-        return $this->belongsTo(Venue::class);
+        return $this->belongsTo(Event::class);
+    }
+
+    public function shiftTimes(): HasMany
+    {
+        return $this->hasMany(ShiftTime::class);
     }
 }

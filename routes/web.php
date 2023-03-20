@@ -1,19 +1,20 @@
 <?php
 
+use App\Http\Controllers\EditTokenController;
 use App\Http\Controllers\EditTokenCreatedController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\VolunteerDeletedController;
-use App\Http\Controllers\EditTokenController;
-use App\Http\Controllers\VerificationSuccessfulController;
-use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VerificationRequestedController;
+use App\Http\Controllers\VerificationSuccessfulController;
 use App\Http\Controllers\VolunteerAuthenticationController;
 use App\Http\Controllers\VolunteerController;
+use App\Http\Controllers\VolunteerDeletedController;
+use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VolunteerVerificationController;
+use App\Skhc\Shifts;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, '__invoke'])->name('home');
-Route::get('/signup', fn () => redirect()->route('volunteer.create'))->name('signup');
+Route::get('/signup', fn() => redirect()->route('volunteer.create'))->name('signup');
 
 Route::get('/volunteers/create', [VolunteerController::class, 'create'])->name('volunteer.create');
 Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
@@ -34,7 +35,7 @@ Route::post('/edit-tokens', [EditTokenController::class, 'store'])->name('edit-t
 Route::delete('/edit-tokens/{token}', [EditTokenController::class, 'destroy'])->name('edit-token.destroy');
 Route::get('/edit-token-created-notice', [EditTokenCreatedController::class, '__invoke'])->name('edit-token.created.notice');
 
-Route::get('/process-expired', fn () => inertia('ProcessExpired'))->name('process.expired');
+Route::get('/process-expired', fn() => inertia('ProcessExpired'))->name('process.expired');
 
 //Route::get('/', function () {
 //    return Inertia::render('Welcome', [
@@ -55,4 +56,4 @@ Route::get('/process-expired', fn () => inertia('ProcessExpired'))->name('proces
 //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 //});
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

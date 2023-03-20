@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Venue;
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ShiftFactory extends Factory
@@ -12,7 +12,7 @@ class ShiftFactory extends Factory
         return [
             'name' => fake()->name,
             'description' => fake()->text,
-            'venue_id' => Venue::factory()->create()
+            'event_id' => Event::factory()->create()
         ];
     }
 }
