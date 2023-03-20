@@ -10,8 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ShirtSizeSeeder::class,
-            VenueSeeder::class,
-            ShiftSeeder::class
+            EventSeeder::class,
         ]);
     }
 }
