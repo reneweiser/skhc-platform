@@ -209,6 +209,6 @@ function isPanelOpen(id) {
 }
 
 .shift-description ul {
-    @apply list-disc list-inside mb-4;
+    @apply list-disc list-outside ml-4;
 }
 </style>

@@ -16,5 +16,5 @@
 </p>
 
 <p>
-    PS: Deine Registrierung kann mit dem Bestätigungslink bis {{now()->addHours(6)->toDateTimeString()}} abgeschlossen werden. Wenn die Bestätigung nicht erfolgt, werden deine gelöscht.
+    PS: Deine Registrierung kann mit dem Bestätigungslink bis {{now()->addHours(6)->toDateTimeString()}} abgeschlossen werden. Wenn die Bestätigung nicht erfolgt, werden deine Daten gelöscht.
 </p>

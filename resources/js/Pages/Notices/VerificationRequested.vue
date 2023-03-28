@@ -15,18 +15,7 @@ const headline = 'Anmeldung abschließen';
         <h1 class="text-xl text-center mb-6">{{ headline }}</h1>
         <p class="text-xl font-bold text-center">
             Danke!<br />Um deine Registrierung abzuschließen, bestätige bitte
-            den Bestätigungslink in deiner Mail.
-        </p>
-        <p>
-            Wir haben an {{ email }} eine Email mit dem Bestätigungslink
-            versendet. Keine erhalten?<br />
-            <Link
-                :href="route('volunteer.create')"
-                class="bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center"
-                data-cta
-            >
-                Erneut versenden!
-            </Link>
+            den Bestätigungslink in deinem Postfach "{{email}}".
         </p>
         <h2 class="font-bold">Falsche Email?</h2>
         <p>
