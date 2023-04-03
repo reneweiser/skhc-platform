@@ -9,7 +9,8 @@
 </p>
 
 <p>
-    Wir freuen uns dich als Helfer*in schon bald kennen zu lernen. Kurz vor dem Rennen mit der anschließenden Jubelfeier am 1. Mai werden wir mit dir in Kontakt treten. Dann gibt es detaillierte Informationen zu deiner Schicht.
+    Wir freuen uns dich als Helfer*in schon bald kennen zu lernen. Kurz vor dem Rennen mit der anschließenden Jubelfeier
+    am 1. Mai werden wir mit dir in Kontakt treten. Dann gibt es detaillierte Informationen zu deiner Schicht.
 </p>
 
 <p>
@@ -29,17 +30,19 @@
 </p>
 
 <ul>
-    @foreach($volunteer->assignments as $shift)
-        <li>{{$shift->label}} ({{$shift->event->name}})</li>
+    @foreach($assignments as $assignment)
+        <li>{{$assignment->label}} (Aufgabe: {{$assignment->shift_name}}, Event: {{$assignment->event_name}}, Treffpunkt: {{$assignment->meeting_place}})</li>
     @endforeach
 </ul>
 
 <p>
-    Dein Helfer-Tshirt kannst du dir am Orgazelt an der Rennstrecke abholen! Falls du es nicht schaffst, schreib uns eine mail und wir vereinbaren ein Treffen.
+    Dein Helfer-Tshirt kannst du dir am Orgazelt an der Rennstrecke abholen! Falls du es nicht schaffst, schreib uns
+    eine mail und wir vereinbaren ein Treffen.
 </p>
 
 <p>
-    Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="{{ $createEditTokenRoute }}">hier einen Zugang generieren</a>.
+    Du kannst deine Informationen jederzeit ändern oder löschen. Dazu kannst du <a href="{{ $createEditTokenRoute }}">hier
+        einen Zugang generieren</a>.
 </p>
 
 <p>

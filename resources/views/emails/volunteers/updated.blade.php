@@ -19,8 +19,8 @@
     Hier sind die Schichten, für die du dich gemeldet hast:
 </h2>
 <ul>
-    @foreach($volunteer->assignments as $shift)
-        <li>{{$shift->name}} ({{$shift->venue->name}})</li>
+    @foreach($assignments as $assignment)
+        <li>{{$assignment->label}} (Aufgabe: {{$assignment->shift_name}}, Event: {{$assignment->event_name}}, Treffpunkt: {{$assignment->meeting_place}})</li>
     @endforeach
 </ul>
 

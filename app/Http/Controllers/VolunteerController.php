@@ -32,7 +32,11 @@ class VolunteerController extends Controller
             ->groupBy('shift_time_id')
             ->get();
 
-        return inertia('Volunteers/Create', compact('shirtSizes', 'shifts', 'spots'));
+        return inertia('Volunteers/Create', [
+            'shirtSizes' => $shirtSizes,
+            'shifts' => $shifts,
+            'spots' => $spots,
+        ]);
     }
 
     public function store(StoreVolunteerRequest $request): RedirectResponse
@@ -45,10 +49,20 @@ class VolunteerController extends Controller
 
     public function edit(EditToken $token): Response|ResponseFactory
     {
+        $shirtSizes = ShirtSize::all();
+        $shifts = ShiftResource::collection(Shift::all());
+
+        $spots = DB::table('shift_times')
+            ->join('assignments', 'assignments.shift_time_id', '=', 'shift_times.id')
+            ->select('shift_times.id as shift_time_id', DB::raw('count(*) as signed_up'))
+            ->groupBy('shift_time_id')
+            ->get();
+
         return inertia('Volunteers/Edit', [
             'volunteer' => VolunteerResource::make($token->volunteer),
-            'shirtSizes' => ShirtSize::all(),
-            'shifts' => Shift::all()
+            'shirtSizes' => $shirtSizes,
+            'shifts' => $shifts,
+            'spots' => $spots,
         ]);
     }
 

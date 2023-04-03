@@ -15,13 +15,11 @@ return new class extends Migration
     {
         Schema::create('shift_times', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
             $table->unsignedBigInteger('shift_id');
             $table->string('label');
             $table->unsignedTinyInteger('volunteers_needed');
             $table->timestamps();
 
-            $table->foreign('event_id')->references('id')->on('events')->cascadeOnDelete();
             $table->foreign('shift_id')->references('id')->on('shifts')->cascadeOnDelete();
         });
     }

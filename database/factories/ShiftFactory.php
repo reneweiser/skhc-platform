@@ -12,7 +12,7 @@ class ShiftFactory extends Factory
         return [
             'name' => fake()->name,
             'description' => fake()->text,
-            'event_id' => Event::factory()->create()
+            'meeting_place' => fake()->text,
         ];
     }
 }

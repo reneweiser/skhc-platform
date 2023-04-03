@@ -2,13 +2,8 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import PacmanLoader from 'vue-spinner/src/PacmanLoader.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { computed, ref } from 'vue';
-
-const props = defineProps({
-    volunteer: Object,
-    shirtSizes: Array,
-    shifts: Array,
-});
+import {groupBy} from 'lodash';
+import {ref} from "vue";
 
 const form = useForm({
     first_name: props.volunteer.data.first_name,
@@ -16,39 +11,58 @@ const form = useForm({
     email: props.volunteer.data.email,
     mobile: props.volunteer.data.mobile,
     shirt_size_id: props.volunteer.data.shirt_size.id,
-    selected_shifts: props.volunteer.data.selected_shifts.map(
-        (shift) => shift.id
-    ),
+    selected_shifts: props.volunteer.data.selected_shifts,
 });
 
-const deleteForm = useForm({
-    volunteerId: props.volunteer.data.id,
+const props = defineProps({
+    volunteer: Object,
+    shirtSizes: Array,
+    shifts: Object,
+    spots: Array,
 });
 
-const showModal = ref(false);
+const events = groupBy(props.shifts.data, shift => shift.event_name);
 
-const raceShifts = computed(() =>
-    props.shifts.filter((item) => item.venue_id === 1)
-);
-const partyShifts = computed(() =>
-    props.shifts.filter((item) => item.venue_id === 2)
-);
+const panelStates = ref([]);
 
 function handleSubmit() {
     form.put(route('volunteer.update', props.volunteer.data));
 }
 
-function handleDeleteRequest() {
-    form.delete(route('volunteer.destroy', props.volunteer.data));
+function canSelectShiftTime(shiftTime) {
+    if (shiftTime.needs_more_volunteers)
+        return true;
+
+    return form.selected_shifts.includes(shiftTime.id)
 }
 
-const headline = `Daten für ${props.volunteer.data.first_name} ändern`;
+function openPanel(id) {
+    panelStates.value.push(id);
+}
+
+function closePanel(id) {
+    const index = panelStates.value.findIndex(item => item === id);
+    panelStates.value.splice(index, 1);
+}
+
+function togglePanel(id) {
+    if (isPanelOpen(id)) {
+        closePanel(id)
+        return;
+    }
+
+    openPanel(id)
+}
+
+function isPanelOpen(id) {
+    return panelStates.value.includes(id);
+}
 </script>
 
 <template>
-    <Head :title="headline" />
+    <Head title="Meine Infos ändern" />
     <GuestLayout>
-        <h1 class="text-xl text-center mb-6">{{ headline }}</h1>
+        <h1 class="text-xl text-center mb-6">Für Schicht anmelden</h1>
         <form
             class="flex flex-col space-y-4"
             @submit.prevent="handleSubmit"
@@ -126,12 +140,11 @@ const headline = `Daten für ${props.volunteer.data.first_name} ändern`;
                     class="w-full rounded-lg"
                 >
                     <option
-                        :selected="size.id === form.shirt_size_id"
                         v-for="size in shirtSizes"
                         :key="size.id"
                         :value="size.id"
                     >
-                        {{ size.name }}
+                        {{ size.name.toUpperCase() }}
                     </option>
                 </select>
                 <span
@@ -140,51 +153,45 @@ const headline = `Daten für ${props.volunteer.data.first_name} ändern`;
                     >{{ form.errors.shirt_size }}</span
                 >
             </label>
-            <fieldset>
-                <legend>Schichten für Seifenkistenrennen</legend>
-                <label
-                    :for="shift.id"
-                    v-for="shift in raceShifts"
-                    :key="shift.id"
-                    class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
-                >
-                    <input
-                        v-model="form.selected_shifts"
-                        type="checkbox"
-                        name="race"
-                        :value="shift.id"
-                        :id="shift.id"
-                        class="mr-2"
-                    />
-                    {{ shift.name }}
-                </label>
-            </fieldset>
 
-            <fieldset>
-                <legend>Schichten für Jubelfeier</legend>
-                <label
-                    :for="shift.id"
-                    v-for="shift in partyShifts"
-                    :key="shift.id"
-                    class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
-                >
-                    <input
-                        v-model="form.selected_shifts"
-                        type="checkbox"
-                        name="party"
-                        :value="shift.id"
-                        :id="shift.id"
-                        class="mr-2"
-                    />
-                    {{ shift.name }}
-                </label>
-            </fieldset>
+            <div class="mt-4" v-for="(shifts, eventTitle) in events">
+                <h3 class="text-lg text-center mt-6 mb-2">{{eventTitle}}</h3>
+                <div class="flex flex-col space-y-4">
+                    <div v-for="shift in shifts" :key="shift.id">
+                        <h4 class="bg-gray-200 p-4 cursor-pointer" :class="isPanelOpen(shift.id) ? 'rounded-t-lg' : 'rounded-lg'" @click="togglePanel(shift.id)">{{shift.name}}</h4>
+                        <div v-if="isPanelOpen(shift.id)">
+                            <fieldset class="bg-gray-100 p-4">
+                                <label
+                                    :for="time.id"
+                                    v-for="time in shift.times"
+                                    :key="time.id"
+                                    class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
+                                    :class="{'opacity-50': !canSelectShiftTime(time)}"
+                                >
+                                    <input
+                                        v-model="form.selected_shifts"
+                                        type="checkbox"
+                                        name="race"
+                                        :value="time.id"
+                                        :id="time.id"
+                                        :disabled="!canSelectShiftTime(time)"
+                                        class="mr-2"
+                                    />
+                                    {{ time.label }}
+                                    <span class="text-xs">(vergeben {{time.spots_filled}}/{{ time.volunteers_needed }})</span>
+                                </label>
+                            </fieldset>
+                            <div class="shift-description bg-gray-100 rounded-b-lg p-4" v-html="shift.description"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <span
                 class="text-red-400"
                 v-if="form.errors.selected_shifts"
                 >{{ form.errors.selected_shifts }}</span
             >
-
             <button
                 type="submit"
                 class="bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center disabled:opacity-25"
@@ -198,47 +205,15 @@ const headline = `Daten für ${props.volunteer.data.first_name} ändern`;
                 />
             </button>
         </form>
-
-        <button
-            @click="showModal = true"
-            class="w-full mt-6 bg-white border border-red-600 h-16 text-red-600 font-bold rounded-lg flex justify-center items-center disabled:opacity-25"
-        >
-            Daten löschen
-        </button>
-
-        <Teleport to="body">
-            <div
-                v-if="showModal"
-                class="p-6 fixed top-0 h-screen w-full bg-white flex flex-col justify-center"
-            >
-                <div class="max-w-screen-sm mx-auto flex flex-col space-y-6">
-                    <p class="text-center text-2xl">
-                        Bist du sicher, dass du deine Daten löschen willst?
-                    </p>
-                    <form @submit.prevent="handleDeleteRequest">
-                        <button
-                            type="submit"
-                            :disabled="deleteForm.processing"
-                            class="w-full bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center"
-                        >
-                            <span v-if="!form.processing"
-                                >Ja, bitte lösche meine Daten.</span
-                            >
-                            <PacmanLoader
-                                v-else
-                                color="#fff"
-                                class="scale-50"
-                            />
-                        </button>
-                    </form>
-                    <button
-                        @click="showModal = false"
-                        class="w-full bg-white border border-red-600 h-16 text-red-600 font-bold rounded-lg flex justify-center items-center"
-                    >
-                        Nein
-                    </button>
-                </div>
-            </div>
-        </Teleport>
     </GuestLayout>
 </template>
+
+<style>
+.shift-description p {
+    @apply mb-4;
+}
+
+.shift-description ul {
+    @apply list-disc list-outside ml-4;
+}
+</style>

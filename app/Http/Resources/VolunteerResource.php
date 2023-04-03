@@ -6,9 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class VolunteerResource extends JsonResource
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
-//        return parent::toArray($request);
         return [
             'id' => $this->id,
             'first_name' => $this->first_name,
@@ -16,7 +15,7 @@ class VolunteerResource extends JsonResource
             'email' => $this->email,
             'mobile' => $this->mobile,
             'shirt_size' => $this->shirtSize,
-            'selected_shifts' => ShiftResource::collection($this->assignments),
+            'selected_shifts' => $this->assignments()->pluck('shift_time_id')
         ];
     }
 }

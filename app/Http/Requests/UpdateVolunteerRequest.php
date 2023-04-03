@@ -20,7 +20,7 @@ class UpdateVolunteerRequest extends FormRequest
             'mobile' => ['required', 'string'],
             'shirt_size_id' => ['required', 'exists:shirt_sizes,id'],
             'selected_shifts' => 'required|array',
-            'selected_shifts.*' => 'exists:shifts,id',
+            'selected_shifts.*' => 'exists:shift_times,id',
         ];
     }
 

@@ -5,25 +5,24 @@ namespace Tests\Unit;
 use App\Mail\VerificationRequested;
 use App\Mail\VerificationSuccessful;
 use App\Models\EditToken;
-use App\Models\Shift;
-use App\Models\ShirtSize;
+use App\Models\ShiftTime;
 use App\Models\Volunteer;
 use App\Models\VolunteerVerificationToken;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class SignupTest extends TestCase
 {
-    use DatabaseMigrations;
-    use WithFaker;
+    use RefreshDatabase;
 
     /**
      * @test
      */
     public function it_creates_a_new_volunteer()
     {
+        $this->seed();
         $this->createVolunteer();
 
         $this->assertDatabaseHas('volunteers', [ 'email' => 'example@test.com' ]);
@@ -34,9 +33,11 @@ class SignupTest extends TestCase
      */
     public function it_assigns_the_correct_shifts_when_a_volunteer_is_created()
     {
+        $this->seed();
         $this->createVolunteer();
 
-        $this->assertDatabaseHas('assignments', ['volunteer_id' => 1, 'shift_id' => 1]);
+        $this->assertDatabaseHas('assignments', ['volunteer_id' => 1, 'shift_time_id' => 1]);
+        $this->assertDatabaseHas('assignments', ['volunteer_id' => 1, 'shift_time_id' => 5]);
     }
 
     /**
@@ -44,6 +45,7 @@ class SignupTest extends TestCase
      */
     public function it_creates_new_volunteers_without_verifying_them()
     {
+        $this->seed();
         $this->createVolunteer();
 
         $this->assertNull(Volunteer::first()->verified);
@@ -54,6 +56,7 @@ class SignupTest extends TestCase
      */
     public function it_creates_a_volunteer_verification_token_when_a_volunteer_is_created()
     {
+        $this->seed();
         $this->createVolunteer();
 
         $this->assertDatabaseCount('volunteer_verification_tokens', 1);
@@ -64,6 +67,7 @@ class SignupTest extends TestCase
      */
     public function it_sends_a_verification_mail_when_a_volunteer_is_created()
     {
+        $this->seed();
         Mail::fake();
 
         $this->createVolunteer();
@@ -78,6 +82,7 @@ class SignupTest extends TestCase
      */
     public function it_verifies_a_volunteer_when_visiting_the_url_of_the_token()
     {
+        $this->seed();
         $this->createVolunteer();
         $token = VolunteerVerificationToken::first();
 
@@ -92,6 +97,7 @@ class SignupTest extends TestCase
      */
     public function it_sends_a_verification_notice_when_a_volunteer_is_verified()
     {
+        $this->seed();
         Mail::fake();
 
         $this->createVolunteer();
@@ -106,6 +112,7 @@ class SignupTest extends TestCase
      */
     public function it_creates_temporary_access_to_edit_data()
     {
+        $this->seed();
         $this->createVolunteer();
         $token = VolunteerVerificationToken::first();
         $this->get(route('volunteer.verify', $token));
@@ -120,17 +127,27 @@ class SignupTest extends TestCase
         });
     }
 
+    /**
+     * @test
+     */
+    public function it_shows_assignments()
+    {
+        $this->seed();
+        $this->createVolunteer();
+
+        $v = Volunteer::first();
+        dd($v->assignments()->pluck('shift_time_id'));
+    }
+
     protected function createVolunteer()
     {
         $this->post(route('volunteer.store'), [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
+            'first_name' => fake()->firstName,
+            'last_name' => fake()->lastName,
             'email' => 'example@test.com',
-            'mobile' => $this->faker->phoneNumber,
-            'shirt_size_id' => ShirtSize::factory()->create()->id,
-            'selected_shifts' => [
-                Shift::factory()->create()->id
-            ]
+            'mobile' => fake()->phoneNumber,
+            'shirt_size_id' => fake()->numberBetween(1, 7),
+            'selected_shifts' => [1,5]
         ]);
     }
 }

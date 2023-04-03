@@ -35,7 +35,6 @@ class ImportShifts extends Command
             );
 
             ShiftTime::firstOrCreate([
-                'event_id' => $event->id,
                 'shift_id' => $shift->id,
                 'label' => $shiftData['time'],
                 'volunteers_needed' => $shiftData['volunteers_needed'],
