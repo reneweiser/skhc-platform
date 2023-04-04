@@ -59,7 +59,7 @@ function handleRequestLogin() {
         </p>
         <div class="mt-12 text-right">
             <form @submit.prevent="handleRequestLogin">
-                <button type="submit" class="text-gray-300 underline">Admin Stuff</button>
+                <button type="submit" class="text-gray-100 underline">Admin Stuff</button>
             </form>
         </div>
     </GuestLayout>
