@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class VolunteersDownloadController extends Controller
 {
+    private string $newLine = "\n";
     public function __invoke(): Response|Application|ResponseFactory
     {
         $content = DB::table('volunteers')
@@ -31,9 +32,9 @@ class VolunteersDownloadController extends Controller
             ->map(fn ($item) => (array)$item)
             ->reduce(function (string $acc, $curr) {
                 $acc .= implode(';', $curr);
-                $acc .= "\n\r";
+                $acc .= $this->newLine;
                 return $acc;
-            }, 'vorname;nachname;email;mobile;verifiziert;t_shirt_groesse;schicht;treffpunkt;schicht_zeit'."\n\r");
+            }, 'vorname;nachname;email;mobile;verifiziert;t_shirt_groesse;schicht;treffpunkt;schicht_zeit'.$this->newLine);
 
         return response($content, 200, [
             'Content-Type' => 'text/csv',
