@@ -144,7 +144,9 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main
+                class="w-full sm:max-w-md mx-auto my-6"
+            >
                 <slot />
             </main>
         </div>

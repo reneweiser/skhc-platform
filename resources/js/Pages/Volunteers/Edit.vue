@@ -1,7 +1,8 @@
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3';
+import {Head, router, useForm} from '@inertiajs/vue3';
 import PacmanLoader from 'vue-spinner/src/PacmanLoader.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
+import Modal from '@/Components/Modal.vue';
 import {groupBy} from 'lodash';
 import {ref} from "vue";
 
@@ -24,9 +25,14 @@ const props = defineProps({
 const events = groupBy(props.shifts.data, shift => shift.event_name);
 
 const panelStates = ref([]);
+const showDeleteModal = ref(false);
 
 function handleSubmit() {
     form.put(route('volunteer.update', props.volunteer.data));
+}
+
+function handleDelete() {
+    router.delete(route('volunteer.destroy', props.volunteer.data));
 }
 
 function canSelectShiftTime(shiftTime) {
@@ -62,7 +68,16 @@ function isPanelOpen(id) {
 <template>
     <Head title="Meine Infos ändern" />
     <GuestLayout>
-        <h1 class="text-xl text-center mb-6">Für Schicht anmelden</h1>
+        <h1 class="text-xl text-center mb-6">Meine Infos ändern</h1>
+
+        <button
+            type="button"
+            @click="showDeleteModal = true"
+            class="w-full bg-white mb-6 h-16 text-red-500 font-bold border border-red-500 rounded-lg flex justify-center items-center disabled:opacity-25"
+        >
+            Daten löschen
+        </button>
+
         <form
             class="flex flex-col space-y-4"
             @submit.prevent="handleSubmit"
@@ -206,6 +221,18 @@ function isPanelOpen(id) {
             </button>
         </form>
     </GuestLayout>
+    <Modal :show="showDeleteModal" @close="showDeleteModal = false">
+        <div class="p-12">
+            <p class="mb-6 text-xl text-center">Bist du sicher, dass du deine Daten unwideruflich löschen willst?</p>
+            <button
+                type="submit"
+                @click="handleDelete"
+                class="w-full bg-white h-16 text-red-500 font-bold border border-red-500 rounded-lg flex justify-center items-center disabled:opacity-25"
+            >
+                Ja, jetzt löschen
+            </button>
+        </div>
+    </Modal>
 </template>
 
 <style>
