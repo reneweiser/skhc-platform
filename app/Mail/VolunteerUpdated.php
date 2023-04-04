@@ -17,10 +17,12 @@ class VolunteerUpdated extends Mailable
 
     public Volunteer $volunteer;
     public Collection $assignments;
+    public string $createEditTokenRoute;
 
     public function __construct(Volunteer $volunteer)
     {
         $this->volunteer = $volunteer;
+        $this->createEditTokenRoute = route('edit-token.create');
         $this->assignments = DB::table('assignments')->where('volunteer_id', $volunteer->id)
             ->join('shift_times', 'assignments.shift_time_id', '=', 'shift_times.id')
             ->join('shifts', 'shift_times.shift_id', '=', 'shifts.id')
