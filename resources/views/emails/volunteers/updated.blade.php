@@ -9,6 +9,11 @@
 </p>
 
 <p>
+    Wir freuen uns dich als Helfer*in schon bald kennen zu lernen. Kurz vor dem Rennen mit der anschließenden Jubelfeier
+    am 1. Mai werden wir mit dir in Kontakt treten. Dann gibt es detaillierte Informationen zu deiner Schicht.
+</p>
+
+<p>
     Das sind deine persönlichen Daten. Bitte kontrolliere deine Mobilfunknummer, sodass wir dich erreichen können.
 </p>
 
