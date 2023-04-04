@@ -9,6 +9,7 @@ use App\Models\ShiftTime;
 use App\Models\Volunteer;
 use App\Models\VolunteerVerificationToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -133,10 +134,34 @@ class SignupTest extends TestCase
     public function it_shows_assignments()
     {
         $this->seed();
-        $this->createVolunteer();
+        Volunteer::factory()->count(5)->create()->each(function (Volunteer $volunteer) {
+            $shiftIds = fake()->randomElements(ShiftTime::pluck('id'), fake()->numberBetween(1, 5));
+            $volunteer->assign($shiftIds);
+        });
 
-        $v = Volunteer::first();
-        dd($v->assignments()->pluck('shift_time_id'));
+        $res = DB::table('volunteers')
+            ->join('assignments', 'volunteers.id', '=', 'assignments.volunteer_id')
+            ->join('shift_times', 'shift_times.id', '=', 'assignments.shift_time_id')
+            ->join('shirt_sizes', 'shirt_sizes.id', '=', 'volunteers.shirt_size_id')
+            ->join('shifts', 'shifts.id', '=', 'shift_times.shift_id')
+            ->select([
+                'volunteers.first_name',
+                'volunteers.last_name',
+                'volunteers.email',
+                'volunteers.mobile',
+                'shirt_sizes.name as shirt_size',
+                'shifts.name as shift_name',
+                'shifts.meeting_place',
+                'shift_times.label',
+            ])
+            ->get()
+            ->map(fn ($item) => (array)$item)
+            ->reduce(function (string $acc, $curr) {
+                $acc .= implode(';', $curr);
+                $acc .= "\n\r";
+                return $acc;
+            }, '');
+        dd($res);
     }
 
     protected function createVolunteer()

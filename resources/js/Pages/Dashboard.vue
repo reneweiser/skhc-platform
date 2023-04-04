@@ -13,8 +13,10 @@ import { Head } from '@inertiajs/vue3';
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
+                    <p>
+                        Du kannst hier die Daten aller Helfer <a class="font-bold underline hover:text-sky-400" :href="route('volunteers.download')">herunterladen</a>.
+                    </p>
                 </div>
             </div>
         </div>

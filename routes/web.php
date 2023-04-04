@@ -10,6 +10,7 @@ use App\Http\Controllers\VerificationSuccessfulController;
 use App\Http\Controllers\VolunteerAuthenticationController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\VolunteerDeletedController;
+use App\Http\Controllers\VolunteersDownloadController;
 use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VolunteerVerificationController;
 use App\Skhc\Shifts;
@@ -60,6 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/volunteers-download', [VolunteersDownloadController::class, '__invoke'])->name('volunteers.download');
 });
 
 require __DIR__ . '/auth.php';
