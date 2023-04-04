@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ShirtSizeSeeder::class,
-            EventSeeder::class,
+//            EventSeeder::class,
         ]);
 
         User::factory()->create([
