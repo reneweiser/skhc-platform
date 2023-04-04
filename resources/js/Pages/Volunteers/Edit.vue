@@ -223,7 +223,7 @@ function isPanelOpen(id) {
     </GuestLayout>
     <Modal :show="showDeleteModal" @close="showDeleteModal = false">
         <div class="p-12">
-            <p class="mb-6 text-xl text-center">Bist du sicher, dass du deine Daten unwideruflich löschen willst?</p>
+            <p class="mb-6 text-xl text-center">Bist du sicher, dass du deine Daten unwiderruflich löschen willst?</p>
             <button
                 type="submit"
                 @click="handleDelete"
