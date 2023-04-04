@@ -13,7 +13,6 @@ use App\Http\Controllers\VolunteerDeletedController;
 use App\Http\Controllers\VolunteersDownloadController;
 use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VolunteerVerificationController;
-use App\Skhc\Shifts;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -44,14 +43,6 @@ Route::get('/process-expired', fn() => inertia('ProcessExpired'))->name('process
 Route::post('/admin-authentication', [AdminAuthenticationController::class, 'store'])->name('admin-auth.store');
 Route::get('/admin-authentication/notice', [AdminAuthenticationController::class, 'notice'])->name('admin-auth.notice');
 Route::get('/admin-authentication/{adminAuthentication}/login', [AdminAuthenticationController::class, 'destroy'])->name('admin-auth.login');
-//Route::get('/', function () {
-//    return Inertia::render('Welcome', [
-//        'canLogin' => Route::has('login'),
-//        'canRegister' => Route::has('register'),
-//        'laravelVersion' => Application::VERSION,
-//        'phpVersion' => PHP_VERSION,
-//    ]);
-//})->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

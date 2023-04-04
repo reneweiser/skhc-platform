@@ -3,8 +3,7 @@
 </p>
 
 <p>
-    Bitte klicke den nachfolgenden Bestätigungslink um deine Registrierung abzuschließen:<br />
-    {{ $link }}
+    Bitte klicke <a href="{{$link}}">diesen Link</a> um deine Registrierung abzuschließen.
 </p>
 
 <p>
@@ -16,5 +15,5 @@
 </p>
 
 <p>
-    PS: Deine Registrierung kann mit dem Bestätigungslink bis {{now()->addHours(6)->toDateTimeString()}} abgeschlossen werden. Wenn die Bestätigung nicht erfolgt, werden deine Daten gelöscht.
+    PS: Deine Registrierung kann mit dem <a href="{{$link}}">Bestätigungslink</a> bis {{now()->addHours(6)->toDateTimeString()}} abgeschlossen werden. Wenn die Bestätigung nicht erfolgt, werden deine Daten gelöscht.
 </p>
