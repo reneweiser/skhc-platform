@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminAuthenticationController;
 use App\Http\Controllers\EditTokenController;
 use App\Http\Controllers\EditTokenCreatedController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VerificationRequestedController;
 use App\Http\Controllers\VerificationSuccessfulController;
 use App\Http\Controllers\VolunteerAuthenticationController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VolunteerVerificationController;
 use App\Skhc\Shifts;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, '__invoke'])->name('home');
 Route::get('/signup', fn() => redirect()->route('volunteer.create'))->name('signup');
@@ -37,6 +40,9 @@ Route::get('/edit-token-created-notice', [EditTokenCreatedController::class, '__
 
 Route::get('/process-expired', fn() => inertia('ProcessExpired'))->name('process.expired');
 
+Route::post('/admin-authentication', [AdminAuthenticationController::class, 'store'])->name('admin-auth.store');
+Route::get('/admin-authentication/notice', [AdminAuthenticationController::class, 'notice'])->name('admin-auth.notice');
+Route::get('/admin-authentication/{adminAuthentication}/login', [AdminAuthenticationController::class, 'destroy'])->name('admin-auth.login');
 //Route::get('/', function () {
 //    return Inertia::render('Welcome', [
 //        'canLogin' => Route::has('login'),
@@ -46,14 +52,14 @@ Route::get('/process-expired', fn() => inertia('ProcessExpired'))->name('process
 //    ]);
 //})->name('home');
 
-//Route::get('/dashboard', function () {
-//    return Inertia::render('Dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
-//
-//Route::middleware('auth')->group(function () {
-//    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-//});
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 require __DIR__ . '/auth.php';
