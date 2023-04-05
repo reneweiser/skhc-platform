@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthenticationController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EditTokenController;
 use App\Http\Controllers\EditTokenCreatedController;
 use App\Http\Controllers\HomeController;
@@ -44,9 +45,7 @@ Route::post('/admin-authentication', [AdminAuthenticationController::class, 'sto
 Route::get('/admin-authentication/notice', [AdminAuthenticationController::class, 'notice'])->name('admin-auth.notice');
 Route::get('/admin-authentication/{adminAuthentication}/login', [AdminAuthenticationController::class, 'destroy'])->name('admin-auth.login');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, '__invoke'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
