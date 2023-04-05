@@ -33,6 +33,13 @@ function handleSubmit() {
     form.post(route('volunteer.store'));
 }
 
+function canSelectShiftTime(shiftTime) {
+    if (shiftTime.needs_more_volunteers)
+        return true;
+
+    return form.selected_shifts.includes(shiftTime.id)
+}
+
 function openPanel(id) {
     panelStates.value.push(id);
 }
@@ -163,6 +170,7 @@ function isPanelOpen(id) {
                                     v-for="time in shift.times"
                                     :key="time.id"
                                     class="block px-4 py-2 border-gray-600 border rounded-lg mb-2"
+                                    :class="{'opacity-50': !canSelectShiftTime(time)}"
                                 >
                                     <input
                                         v-model="form.selected_shifts"
@@ -170,6 +178,7 @@ function isPanelOpen(id) {
                                         name="race"
                                         :value="time.id"
                                         :id="time.id"
+                                        :disabled="!canSelectShiftTime(time)"
                                         class="mr-2"
                                     />
                                     {{ time.label }}
