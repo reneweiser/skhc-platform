@@ -66,6 +66,9 @@ class VolunteerFilters
             ->get()
             ->map(function ($spot) {
                 $spot->remaining = $spot->volunteers_needed - $spot->spots_filled;
+                $spot->filledPercent = $spot->spots_filled === 0
+                    ? 0
+                    : round($spot->spots_filled / $spot->volunteers_needed * 100, 1);
                 return $spot;
             });
     }
