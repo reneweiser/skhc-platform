@@ -15,7 +15,6 @@ use App\Http\Controllers\VolunteersDownloadController;
 use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VolunteerVerificationController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, '__invoke'])->name('home');
 Route::get('/signup', fn() => redirect()->route('volunteer.create'))->name('signup');

@@ -4,7 +4,8 @@ import { Head } from '@inertiajs/vue3';
 
 defineProps({
     count: Number,
-    shoppingList: Array
+    shoppingList: Array,
+    spotsFilled: Array
 });
 </script>
 
@@ -17,8 +18,8 @@ defineProps({
         </template>
 
         <div class="py-12">
-            <div id="sections" class="max-w-md mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
+            <div id="sections" class="mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden max-w-lg mx-auto shadow-sm sm:rounded-lg p-4">
                     <p>Es haben sich bisher <span class="font-bold">{{count}}</span> Helfer angemeldet.</p>
                     <p>
                         Du kannst hier die Daten aller Helfer herunterladen.
@@ -26,7 +27,7 @@ defineProps({
                     <a :href="route('volunteers.download')" class="bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center">Download</a>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
+                <div class="bg-white overflow-hidden max-w-lg mx-auto shadow-sm sm:rounded-lg p-4">
                     <h2>Shopping List</h2>
                     <p>Helfer haben sich diese Größen gewünscht.</p>
                     <table class="w-full">
@@ -37,6 +38,25 @@ defineProps({
                         <tr v-for="size in shoppingList" :key="size.name">
                             <td>{{size.name.toUpperCase()}}</td>
                             <td>{{size.total}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="bg-white overflow-scroll shadow-sm sm:rounded-lg p-4">
+                    <h2>Unbeliebte Schichten</h2>
+                    <p>Diese Schichten brauchen noch die meisten Helfer.</p>
+                    <table>
+                        <tr>
+                            <th>braucht noch</th>
+                            <th>Zeit</th>
+                            <th>Schicht</th>
+                            <th>Event</th>
+                        </tr>
+                        <tr v-for="spot in spotsFilled" :key="spot.shift_time_id">
+                            <td>{{spot.remaining}}</td>
+                            <td>{{spot.shift_time}}</td>
+                            <td>{{spot.shift_name}}</td>
+                            <td>{{spot.event_name}}</td>
                         </tr>
                     </table>
                 </div>
@@ -54,7 +74,7 @@ h2{
 }
 
 th, td {
-    @apply border;
+    @apply border whitespace-nowrap;
 }
 
 p:not(:last-child) {
