@@ -47,15 +47,17 @@ defineProps({
                     <p>Diese Schichten brauchen noch die meisten Helfer.</p>
                     <table>
                         <tr>
-                            <th>Besetzung in %</th>
+                            <th>braucht insgesamt</th>
                             <th>braucht noch</th>
+                            <th>Besetzung in %</th>
                             <th>Zeit</th>
                             <th>Schicht</th>
                             <th>Event</th>
                         </tr>
                         <tr v-for="spot in spotsFilled" :key="spot.shift_time_id">
-                            <td>{{spot.filledPercent}}</td>
+                            <td>{{spot.volunteers_needed}}</td>
                             <td>{{spot.remaining}}</td>
+                            <td>{{spot.filledPercent}}</td>
                             <td>{{spot.shift_time}}</td>
                             <td>{{spot.shift_name}}</td>
                             <td>{{spot.event_name}}</td>
