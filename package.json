@@ -12,13 +12,14 @@
         "axios": "^1.1.2",
         "laravel-vite-plugin": "^0.7.2",
         "lodash": "^4.17.19",
+        "flowbite": "^1.6.5",
+        "prettier": "^2.8.4",
         "postcss": "^8.4.18",
         "tailwindcss": "^3.2.1",
         "vite": "^4.0.0",
         "vue": "^3.2.41"
     },
     "dependencies": {
-        "prettier": "^2.8.4",
         "vue-spinner": "^1.0.4"
     }
 }
