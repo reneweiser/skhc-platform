@@ -7,10 +7,10 @@ use App\Http\Requests\UpdateVolunteerRequest;
 use App\Http\Resources\ShiftResource;
 use App\Http\Resources\VolunteerResource;
 use App\Mail\VolunteerDeleted;
+use App\Mail\VolunteerUpdated;
 use App\Models\EditToken;
 use App\Models\Shift;
 use App\Models\ShirtSize;
-use App\Models\Volunteer;
 use App\Skhc\VolunteerFilters;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
@@ -54,6 +54,8 @@ class VolunteerController extends Controller
     public function update(UpdateVolunteerRequest $request, EditToken $token): RedirectResponse
     {
         $request->persist($token->volunteer);
+
+        Mail::to($token->volunteer->email)->send(new VolunteerUpdated($token->volunteer));
 
         return redirect()->route('volunteer.updated.notice')
             ->with('email', $token->volunteer->email);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthenticationController;
+use App\Http\Controllers\AdminVolunteerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EditTokenController;
 use App\Http\Controllers\EditTokenCreatedController;
@@ -46,6 +47,14 @@ Route::get('/admin-authentication/{adminAuthentication}/login', [AdminAuthentica
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, '__invoke'])->name('dashboard');
+
+    Route::get('/admin/volunteers', [AdminVolunteerController::class, 'index'])->name('admin.volunteer.index');
+    Route::get('/admin/volunteers/create', [AdminVolunteerController::class, 'create'])->name('admin.volunteer.create');
+    Route::post('/admin/volunteers', [AdminVolunteerController::class, 'store'])->name('admin.volunteer.store');
+    Route::get('/admin/volunteers/{volunteer}/edit', [AdminVolunteerController::class, 'edit'])->name('admin.volunteer.edit');
+    Route::put('/admin/volunteers/{volunteer}', [AdminVolunteerController::class, 'update'])->name('admin.volunteer.update');
+    Route::delete('/admin/volunteers/{volunteer}', [AdminVolunteerController::class, 'destroy'])->name('admin.volunteer.destroy');
+    Route::delete('/admin/volunteers', [AdminVolunteerController::class, 'destroyAll'])->name('admin.volunteer.destroy.all');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

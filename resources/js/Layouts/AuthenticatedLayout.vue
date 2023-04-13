@@ -32,6 +32,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
+                                <NavLink :href="route('admin.volunteer.index')" :active="route().current('admin.volunteer.index')">
+                                    Helfer
+                                </NavLink>
                             </div>
                         </div>
 
@@ -145,7 +148,7 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main
-                class="w-full sm:max-w-md lg:max-w-7xl mx-auto my-6"
+                class="w-full sm:max-w-7xl mx-auto"
             >
                 <slot />
             </main>

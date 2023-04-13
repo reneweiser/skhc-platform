@@ -16,6 +16,7 @@ class Volunteer extends Model
     public function assign(array $shiftIds)
     {
         $this->assignments()->sync($shiftIds);
+        $this->touch();
     }
 
     public function assignments(): BelongsToMany

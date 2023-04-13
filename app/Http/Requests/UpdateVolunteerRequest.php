@@ -41,7 +41,5 @@ class UpdateVolunteerRequest extends FormRequest
         $volunteer->update($this->safe()->except('selected_shifts'));
 
         $volunteer->assign($this->safe()->only('selected_shifts')['selected_shifts']);
-
-        Mail::to($volunteer->email)->send(new VolunteerUpdated($volunteer));
     }
 }
