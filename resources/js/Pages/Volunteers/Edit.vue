@@ -16,6 +16,7 @@ const form = useForm({
 });
 
 const props = defineProps({
+    token: String,
     volunteer: Object,
     shirtSizes: Array,
     shifts: Object,
@@ -28,11 +29,11 @@ const panelStates = ref([]);
 const showDeleteModal = ref(false);
 
 function handleSubmit() {
-    form.put(route('volunteer.update', props.volunteer.data));
+    form.put(route('volunteer.update', props.token));
 }
 
 function handleDelete() {
-    router.delete(route('volunteer.destroy', props.volunteer.data));
+    router.delete(route('volunteer.destroy', props.token));
 }
 
 function canSelectShiftTime(shiftTime) {

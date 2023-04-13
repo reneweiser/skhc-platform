@@ -22,8 +22,8 @@ Route::get('/signup', fn() => redirect()->route('volunteer.create'))->name('sign
 Route::get('/volunteers/create', [VolunteerController::class, 'create'])->name('volunteer.create');
 Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteer.store');
 Route::get('/volunteers/{token}/edit', [VolunteerController::class, 'edit'])->name('volunteer.edit');
-Route::put('/volunteers/{volunteer}', [VolunteerController::class, 'update'])->name('volunteer.update');
-Route::delete('/volunteers/{volunteer}', [VolunteerController::class, 'destroy'])->name('volunteer.destroy');
+Route::put('/volunteers/{token}', [VolunteerController::class, 'update'])->name('volunteer.update');
+Route::delete('/volunteers/{token}', [VolunteerController::class, 'destroy'])->name('volunteer.destroy');
 
 Route::get('/verification-notice', [VerificationRequestedController::class, '__invoke'])->name('volunteer.verification.notice');
 Route::get('/successful-notice', [VerificationSuccessfulController::class, '__invoke'])->name('volunteer.successful.notice');

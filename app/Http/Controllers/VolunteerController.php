@@ -13,7 +13,6 @@ use App\Models\ShirtSize;
 use App\Models\Volunteer;
 use App\Skhc\VolunteerFilters;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -43,30 +42,28 @@ class VolunteerController extends Controller
 
     public function edit(EditToken $token): Response|ResponseFactory
     {
-        $shirtSizes = ShirtSize::all();
-        $shifts = ShiftResource::collection(Shift::all());
-
         return inertia('Volunteers/Edit', [
+            'token' => $token->id,
             'volunteer' => VolunteerResource::make($token->volunteer),
-            'shirtSizes' => $shirtSizes,
-            'shifts' => $shifts,
+            'shirtSizes' => ShirtSize::all(),
+            'shifts' => ShiftResource::collection(Shift::all()),
             'spots' => VolunteerFilters::spots(),
         ]);
     }
 
-    public function update(UpdateVolunteerRequest $request, Volunteer $volunteer): RedirectResponse
+    public function update(UpdateVolunteerRequest $request, EditToken $token): RedirectResponse
     {
-        $request->persist($volunteer);
+        $request->persist($token->volunteer);
 
         return redirect()->route('volunteer.updated.notice')
-            ->with('email', $volunteer->email);
+            ->with('email', $token->volunteer->email);
     }
 
-    public function destroy(Volunteer $volunteer): RedirectResponse
+    public function destroy(EditToken $token): RedirectResponse
     {
-        $email = $volunteer->email;
+        $email = $token->volunteer->email;
 
-        $volunteer->delete();
+        $token->volunteer->delete();
 
         Mail::to($email)->send(new VolunteerDeleted());
 
