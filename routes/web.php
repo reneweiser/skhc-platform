@@ -7,6 +7,7 @@ use App\Http\Controllers\EditTokenController;
 use App\Http\Controllers\EditTokenCreatedController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\VerificationRequestedController;
 use App\Http\Controllers\VerificationSuccessfulController;
 use App\Http\Controllers\VolunteerAuthenticationController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\VolunteerDeletedController;
 use App\Http\Controllers\VolunteersDownloadController;
 use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VolunteerVerificationController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, '__invoke'])->name('home');
@@ -56,11 +59,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/volunteers/{volunteer}', [AdminVolunteerController::class, 'destroy'])->name('admin.volunteer.destroy');
     Route::delete('/admin/volunteers', [AdminVolunteerController::class, 'destroyAll'])->name('admin.volunteer.destroy.all');
 
+    Route::resource('admin/shifts', ShiftController::class);
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/volunteers-download', [VolunteersDownloadController::class, '__invoke'])->name('volunteers.download');
 });
+
+if(config('app.env') === 'local') {
+    Route::get('/test-login', function () {
+        Auth::login(User::first());
+
+        return redirect()->route('dashboard');
+    });
+}
 
 require __DIR__ . '/auth.php';

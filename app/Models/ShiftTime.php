@@ -10,7 +10,7 @@ class ShiftTime extends Model
 {
     use HasFactory;
 
-    public function event(): BelongsTo
+    public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class);
     }
