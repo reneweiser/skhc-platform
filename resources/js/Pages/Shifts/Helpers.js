@@ -10,3 +10,26 @@ export function handleAddShiftTime(form, index) {
         volunteers_needed: 3,
     });
 }
+
+export function handleRemoveShiftTime(form, index) {
+    if (form.shift_times.length === 1) return;
+    form.shift_times.splice(index, 1);
+}
+
+export function moveUp(form, index) {
+    const tmp = form.shift_times[index];
+
+    if (index <= 1) return;
+
+    form.shift_times.splice(index, 1);
+    form.shift_times.splice(index - 1, tmp);
+}
+
+export function moveDown(form, index) {
+    const tmp = form.shift_times[index];
+
+    if (index >= form.shift_times.length - 1) return;
+
+    form.shift_times.splice(index, 1);
+    form.shift_times.splice(index + 1, 0, tmp);
+}

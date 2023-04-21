@@ -2,12 +2,19 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from '@/Components/Card.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import TextArea from '@/Components/TextArea.vue';
 import { marked } from 'marked';
 import SelectInput from '@/Components/SelectInput.vue';
 import NumberInput from '@/Components/NumberInput.vue';
 import { onMounted } from 'vue';
+import {
+    createForm,
+    handleAddShiftTime,
+    handleRemoveShiftTime,
+    moveDown,
+    moveUp,
+} from '@/Pages/Shifts/Helpers';
 
 const props = defineProps({
     events: Array,
@@ -20,46 +27,13 @@ onMounted(() => {
 
 const headline = 'Schicht erstellen';
 
-const form = useForm({
+const form = createForm({
     event: props.shift.event_id,
     name: props.shift.name,
     meeting_place: props.shift.meeting_place,
     description: props.shift.description,
     shift_times: props.shift.shift_times,
 });
-
-function handleAddShiftTime(index) {
-    form.shift_times.splice(index + 1, 0, {
-        label: '8:00 - 10:30',
-        volunteers_needed: 3,
-    });
-}
-
-function handleRemoveShiftTime(index) {
-    if (form.shift_times.length === 1) return;
-    form.shift_times.splice(index, 1);
-}
-
-function moveUp(index) {
-    const tmp = form.shift_times[index];
-
-    const newIndex = index >= 1 ? index - 1 : 0;
-
-    form.shift_times.splice(index, 1);
-    form.shift_times.splice(newIndex, 0, tmp);
-}
-
-function moveDown(index) {
-    const tmp = form.shift_times[index];
-
-    const newIndex =
-        index <= form.shift_times.length - 1
-            ? index + 1
-            : form.shift_times.length - 1;
-
-    form.shift_times.splice(index, 1);
-    form.shift_times.splice(newIndex, 0, tmp);
-}
 
 function handleSubmit() {
     form.put(route('shifts.update', props.shift.id));
@@ -156,24 +130,11 @@ function handleSubmit() {
                                     role="group"
                                 >
                                     <button
-                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-                                        type="button"
-                                        @click="moveUp(shiftTimeIndex)"
-                                    >
-                                        &uarr;
-                                    </button>
-                                    <button
-                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
-                                        type="button"
-                                        @click="moveDown(shiftTimeIndex)"
-                                    >
-                                        &darr;
-                                    </button>
-                                    <button
-                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
                                         type="button"
                                         @click="
                                             handleRemoveShiftTime(
+                                                form,
                                                 shiftTimeIndex
                                             )
                                         "
@@ -181,13 +142,30 @@ function handleSubmit() {
                                         &minus;
                                     </button>
                                     <button
-                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
                                         type="button"
                                         @click="
-                                            handleAddShiftTime(shiftTimeIndex)
+                                            handleAddShiftTime(
+                                                form,
+                                                shiftTimeIndex
+                                            )
                                         "
                                     >
                                         &plus;
+                                    </button>
+                                    <button
+                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+                                        type="button"
+                                        @click="moveUp(form, shiftTimeIndex)"
+                                    >
+                                        &uarr;
+                                    </button>
+                                    <button
+                                        class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+                                        type="button"
+                                        @click="moveDown(form, shiftTimeIndex)"
+                                    >
+                                        &darr;
                                     </button>
                                 </div>
                             </div>

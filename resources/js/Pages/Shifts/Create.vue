@@ -8,14 +8,20 @@ import { marked } from 'marked';
 import SelectInput from '@/Components/SelectInput.vue';
 import NumberInput from '@/Components/NumberInput.vue';
 import { onMounted } from 'vue';
-import { createForm, handleAddShiftTime } from '@/Pages/Shifts/Helpers';
+import {
+    createForm,
+    handleAddShiftTime,
+    handleRemoveShiftTime,
+    moveDown,
+    moveUp,
+} from '@/Pages/Shifts/Helpers';
 
 defineProps({
     events: Array,
 });
 
 onMounted(() => {
-    if (form.shift_times.length === 0) handleAddShiftTime();
+    if (form.shift_times.length === 0) handleAddShiftTime(form, 0);
 });
 
 const headline = 'Schicht erstellen';
@@ -25,7 +31,7 @@ const form = createForm({
     name: '',
     meeting_place: '',
     description:
-        'Hier kannst du in **Markdown** schreiben. Im Internet gibt es einige Einführungen dafür. [Dieses Tutorial](markdowntutorial.com) ist du nur ein Vorschlag.',
+        'Hier kannst du in **Markdown** schreiben. Im Internet gibt es einige Einführungen dafür. [Dieses Tutorial](https://markdowntutorial.com) ist du nur ein Vorschlag.',
     shift_times: [
         {
             label: '8:00 - 10:00',
@@ -41,29 +47,6 @@ const form = createForm({
         },
     ],
 });
-
-function handleRemoveShiftTime(index) {
-    if (form.shift_times.length === 1) return;
-    form.shift_times.splice(index, 1);
-}
-
-function moveUp(index) {
-    const tmp = form.shift_times[index];
-
-    if (index <= 1) return;
-
-    form.shift_times.splice(index, 1);
-    form.shift_times.splice(index - 1, tmp);
-}
-
-function moveDown(index) {
-    const tmp = form.shift_times[index];
-
-    if (index >= form.shift_times.length - 1) return;
-
-    form.shift_times.splice(index, 1);
-    form.shift_times.splice(index + 1, 0, tmp);
-}
 
 function handleSubmit() {
     form.post(route('shifts.store'));
@@ -163,6 +146,7 @@ function handleSubmit() {
                                         type="button"
                                         @click="
                                             handleRemoveShiftTime(
+                                                form,
                                                 shiftTimeIndex
                                             )
                                         "
@@ -184,14 +168,14 @@ function handleSubmit() {
                                     <button
                                         class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
                                         type="button"
-                                        @click="moveUp(shiftTimeIndex)"
+                                        @click="moveUp(form, shiftTimeIndex)"
                                     >
                                         &uarr;
                                     </button>
                                     <button
                                         class="w-1/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
                                         type="button"
-                                        @click="moveDown(shiftTimeIndex)"
+                                        @click="moveDown(form, shiftTimeIndex)"
                                     >
                                         &darr;
                                     </button>
