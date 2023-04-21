@@ -9,6 +9,7 @@ const props = defineProps({
 });
 
 const showDeleteModal = ref(false);
+const count = props.volunteers.data.length;
 
 function handleVisit(volunteerId) {
     router.visit(route('admin.volunteer.edit', volunteerId));
@@ -42,6 +43,21 @@ function shiftsToString(shifts) {
                 id="sections"
                 class="mx-auto sm:px-6 lg:px-8"
             >
+                <div
+                    class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                >
+                    <p>
+                        Es haben sich bisher
+                        <span class="font-bold">{{ count }}</span> Helfer
+                        angemeldet.
+                    </p>
+                    <p>Du kannst hier die Daten aller Helfer herunterladen.</p>
+                    <a
+                        :href="route('volunteers.download')"
+                        class="bg-gray-700 h-16 text-white font-bold rounded-lg flex justify-center items-center"
+                        >Download</a
+                    >
+                </div>
                 <div class="flex justify-end space-x-2">
                     <Link
                         :href="route('admin.volunteer.create')"

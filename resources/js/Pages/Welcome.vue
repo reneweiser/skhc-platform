@@ -1,12 +1,8 @@
 <script setup>
-import {Head, Link, router} from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 
 const headline = 'SpaceKidHeadCup';
-
-function handleRequestLogin() {
-    router.post(route('admin-auth.store'));
-}
 </script>
 
 <template>
@@ -58,9 +54,11 @@ function handleRequestLogin() {
             verwendet und nicht an Dritte weitergegeben.
         </p>
         <div class="mt-12 text-right">
-            <form @submit.prevent="handleRequestLogin">
-                <button type="submit" class="text-gray-100 underline">Admin Stuff</button>
-            </form>
+            <Link
+                class="text-gray-200"
+                :href="route('login')"
+                >Login</Link
+            >
         </div>
     </GuestLayout>
 </template>

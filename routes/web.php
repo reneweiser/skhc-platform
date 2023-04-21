@@ -16,8 +16,6 @@ use App\Http\Controllers\VolunteerDeletedController;
 use App\Http\Controllers\VolunteersDownloadController;
 use App\Http\Controllers\VolunteerUpdatedController;
 use App\Http\Controllers\VolunteerVerificationController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, '__invoke'])->name('home');
@@ -67,13 +65,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/volunteers-download', [VolunteersDownloadController::class, '__invoke'])->name('volunteers.download');
 });
-
-if(config('app.env') === 'local') {
-    Route::get('/test-login', function () {
-        Auth::login(User::first());
-
-        return redirect()->route('dashboard');
-    });
-}
 
 require __DIR__ . '/auth.php';
