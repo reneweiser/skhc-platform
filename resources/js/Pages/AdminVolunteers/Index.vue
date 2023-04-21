@@ -18,6 +18,13 @@ function handleDelete() {
     router.delete(route('admin.volunteer.destroy.all'));
     showDeleteModal.value = false;
 }
+
+function shiftsToString(shifts) {
+    const shiftNames = shifts.map((item) => item.name);
+    const count = shiftNames.length > 3 ? ` (+${shiftNames.length - 3})` : '';
+
+    return shiftNames.slice(0, 3).join(', ') + count;
+}
 </script>
 
 <template>
@@ -74,6 +81,12 @@ function handleDelete() {
                                     class="px-6 py-3"
                                     scope="col"
                                 >
+                                    Schichten
+                                </th>
+                                <th
+                                    class="px-6 py-3"
+                                    scope="col"
+                                >
                                     Email
                                 </th>
                                 <th
@@ -105,6 +118,13 @@ function handleDelete() {
                                 </th>
                                 <td class="px-6 py-4">
                                     {{ volunteer.last_name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{
+                                        shiftsToString(
+                                            volunteer.selected_shifts
+                                        )
+                                    }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ volunteer.email }}

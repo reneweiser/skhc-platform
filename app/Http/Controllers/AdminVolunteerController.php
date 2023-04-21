@@ -6,14 +6,11 @@ use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
 use App\Http\Resources\ShiftResource;
 use App\Http\Resources\VolunteerResource;
-use App\Mail\VolunteerDeleted;
-use App\Models\EditToken;
 use App\Models\Shift;
 use App\Models\ShirtSize;
 use App\Models\Volunteer;
 use App\Skhc\VolunteerFilters;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
 use Inertia\Response;
 use Inertia\ResponseFactory;
 
@@ -22,7 +19,7 @@ class AdminVolunteerController extends Controller
     public function index(): Response|ResponseFactory
     {
         return inertia('AdminVolunteers/Index', [
-            'volunteers' => VolunteerResource::collection(Volunteer::orderByDesc('updated_at')->get())
+            'volunteers' => VolunteerResource::collection(Volunteer::with('assignments')->orderByDesc('updated_at')->get())
         ]);
     }
 

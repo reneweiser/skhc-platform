@@ -15,7 +15,8 @@ class VolunteerResource extends JsonResource
             'email' => $this->email,
             'mobile' => $this->mobile,
             'shirt_size' => $this->shirtSize,
-            'selected_shifts' => $this->assignments()->pluck('shift_time_id'),
+//            'selected_shifts' => $this->assignments()->pluck('shift_time_id'),
+            'selected_shifts' => AssignmentResource::collection($this->assignments()->with('shift')->get()),
             'updated_at' => $this->updated_at->diffForHumans(),
         ];
     }
