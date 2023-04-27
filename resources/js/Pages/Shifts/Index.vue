@@ -128,8 +128,8 @@ function handleDelete() {
     >
         <div class="p-6">
             <p class="mb-6 text-xl text-center">
-                Bist du sicher, dass du die Daten
-                <span class="font-bold">aller Helfer</span>
+                Bist du sicher, dass du
+                <span class="font-bold">alle Schichten</span>
                 unwiderruflich löschen willst?
             </p>
             <div class="flex justify-end">
