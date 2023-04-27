@@ -2,12 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Card from '@/Components/Card.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import TextArea from '@/Components/TextArea.vue';
 import { marked } from 'marked';
 import SelectInput from '@/Components/SelectInput.vue';
 import NumberInput from '@/Components/NumberInput.vue';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import {
     createForm,
     handleAddShiftTime,
@@ -15,6 +15,7 @@ import {
     moveDown,
     moveUp,
 } from '@/Pages/Shifts/Helpers';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
     events: Array,
@@ -26,6 +27,7 @@ onMounted(() => {
 });
 
 const headline = 'Schicht erstellen';
+const showDeleteModal = ref(false);
 
 const form = createForm({
     event: props.shift.event_id,
@@ -34,6 +36,10 @@ const form = createForm({
     description: props.shift.description,
     shift_times: props.shift.shift_times,
 });
+
+function handleDelete() {
+    router.delete(route('shifts.destroy', props.shift));
+}
 
 function handleSubmit() {
     form.put(route('shifts.update', props.shift.id));
@@ -59,6 +65,15 @@ function handleSubmit() {
                 class="mx-auto sm:px-6 lg:px-8"
             >
                 <Card class="max-w-screen-md mx-auto">
+                    <div class="flex justify-end space-x-2">
+                        <button
+                            type="button"
+                            @click="showDeleteModal = true"
+                            class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                        >
+                            Schicht löschen
+                        </button>
+                    </div>
                     <form
                         class="flex flex-col space-y-4"
                         @submit.prevent="handleSubmit"
@@ -183,6 +198,33 @@ function handleSubmit() {
                 </Card>
             </div>
         </div>
+        <Modal
+            :show="showDeleteModal"
+            @close="showDeleteModal = false"
+        >
+            <div class="p-6">
+                <p class="mb-6 text-xl text-center">
+                    Bist du sicher, dass du diese Schicht unwiderruflich löschen
+                    willst?
+                </p>
+                <div class="flex justify-end space-x-4">
+                    <button
+                        type="button"
+                        @click="showDeleteModal = false"
+                        class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    >
+                        Nein
+                    </button>
+                    <button
+                        type="submit"
+                        @click="handleDelete"
+                        class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                    >
+                        Ja, jetzt löschen
+                    </button>
+                </div>
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>
 

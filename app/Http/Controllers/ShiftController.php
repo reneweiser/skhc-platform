@@ -94,4 +94,11 @@ class ShiftController extends Controller
 
         return redirect()->route('shifts.index');
     }
+
+    public function destroy(Shift $shift): RedirectResponse
+    {
+        $shift->delete();
+
+        return redirect()->route('shifts.index');
+    }
 }
