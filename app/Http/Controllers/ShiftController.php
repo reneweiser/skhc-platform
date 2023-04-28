@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Shift;
 use App\Models\ShiftTime;
+use App\Models\Visibility;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 use Inertia\ResponseFactory;
@@ -14,14 +15,15 @@ class ShiftController extends Controller
     public function index(): Response|ResponseFactory
     {
         return inertia('Shifts/Index', [
-            'shifts' => ShiftTime::orderByDesc('updated_at')->with('shift.event')->get()
+            'shifts' => ShiftTime::orderByDesc('updated_at')->with(['shift.visibility', 'shift.event'])->get()
         ]);
     }
 
     public function create(): Response|ResponseFactory
     {
         return inertia('Shifts/Create', [
-            'events' => Event::select(['name', 'id'])->get()
+            'events' => Event::select(['name', 'id'])->get(),
+            'visibilities' => Visibility::all()->map(fn (Visibility $v) => ['id' => $v->id, 'name' => $v->label])
         ]);
     }
 
@@ -29,6 +31,7 @@ class ShiftController extends Controller
     {
         $validated = request()->validate([
             'event' => 'exists:events,id',
+            'visibility' => 'exists:visibilities,id',
             'name' => 'string|required',
             'meeting_place' => 'string',
             'description' => 'string',
@@ -40,6 +43,7 @@ class ShiftController extends Controller
 
         $shift = new Shift();
         $shift->event_id = (int)$validated['event'];
+        $shift->visibility_id = (int)$validated['visibility'];
         $shift->name = $validated['name'];
         $shift->meeting_place = $validated['meeting_place'];
         $shift->description = $validated['description'];
@@ -63,6 +67,7 @@ class ShiftController extends Controller
         return inertia('Shifts/Edit', [
             'events' => Event::select(['name', 'id'])->get(),
             'shift' => Shift::with('shiftTimes')->where('id', $shift->id)->first(),
+            'visibilities' => Visibility::all()->map(fn (Visibility $v) => ['id' => $v->id, 'name' => $v->label])
         ]);
     }
 
@@ -71,6 +76,7 @@ class ShiftController extends Controller
         $validated = request()->validate([
             'event' => 'exists:events,id',
             'name' => 'string|required',
+            'visibility' => 'exists:visibilities,id',
             'meeting_place' => 'string',
             'description' => 'string',
             'shift_times' => 'array',
@@ -81,6 +87,7 @@ class ShiftController extends Controller
         ]);
 
         $shift->event_id = (int)$validated['event'];
+        $shift->visibility_id = (int)$validated['visibility'];
         $shift->name = $validated['name'];
         $shift->meeting_place = $validated['meeting_place'];
         $shift->description = $validated['description'];

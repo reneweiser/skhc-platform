@@ -19,6 +19,7 @@ import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
     events: Array,
+    visibilities: Array,
     shift: Object,
 });
 
@@ -31,6 +32,7 @@ const showDeleteModal = ref(false);
 
 const form = createForm({
     event: props.shift.event_id,
+    visibility: props.shift.visibility_id,
     name: props.shift.name,
     meeting_place: props.shift.meeting_place,
     description: props.shift.description,
@@ -78,12 +80,20 @@ function handleSubmit() {
                         class="flex flex-col space-y-4"
                         @submit.prevent="handleSubmit"
                     >
-                        <SelectInput
-                            v-model.number="form.event"
-                            :options="events"
-                            label="Wähle ein Event für die Schicht"
-                            name="event"
-                        />
+                        <div class="sm:grid grid-cols-2 gap-4">
+                            <SelectInput
+                                v-model.number="form.event"
+                                :options="events"
+                                label="Wähle ein Event für die Schicht"
+                                name="event"
+                            />
+                            <SelectInput
+                                v-model.number="form.visibility"
+                                :options="visibilities"
+                                label="Sichtbarkeit"
+                                name="visibility"
+                            />
+                        </div>
                         <TextInput
                             v-model="form.name"
                             label="Name"

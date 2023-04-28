@@ -12,6 +12,7 @@ use App\Models\EditToken;
 use App\Models\Shift;
 use App\Models\ShirtSize;
 use App\Skhc\VolunteerFilters;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Response;
@@ -23,7 +24,9 @@ class VolunteerController extends Controller
     {
         $shirtSizes = ShirtSize::all();
 
-        $shifts = ShiftResource::collection(Shift::all());
+        $shifts = ShiftResource::collection(Shift::whereHas('visibility', function ($query) {
+            $query->where('label', 'public');
+        })->get());
 
         return inertia('Volunteers/Create', [
             'shirtSizes' => $shirtSizes,

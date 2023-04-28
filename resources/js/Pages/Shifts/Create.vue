@@ -16,8 +16,9 @@ import {
     moveUp,
 } from '@/Pages/Shifts/Helpers';
 
-defineProps({
+const props = defineProps({
     events: Array,
+    visibilities: Array,
 });
 
 onMounted(() => {
@@ -27,7 +28,8 @@ onMounted(() => {
 const headline = 'Schicht erstellen';
 
 const form = createForm({
-    event: null,
+    event: 1,
+    visibility: 1,
     name: '',
     meeting_place: '',
     description:
@@ -76,12 +78,20 @@ function handleSubmit() {
                         class="flex flex-col space-y-4"
                         @submit.prevent="handleSubmit"
                     >
-                        <SelectInput
-                            v-model.number="form.event"
-                            :options="events"
-                            label="Wähle ein Event für die Schicht"
-                            name="event"
-                        />
+                        <div class="sm:grid grid-cols-2 gap-4">
+                            <SelectInput
+                                v-model.number="form.event"
+                                :options="events"
+                                label="Wähle ein Event für die Schicht"
+                                name="event"
+                            />
+                            <SelectInput
+                                v-model.number="form.visibility"
+                                :options="visibilities"
+                                label="Sichtbarkeit"
+                                name="visibility"
+                            />
+                        </div>
                         <TextInput
                             v-model="form.name"
                             label="Name"
@@ -94,8 +104,8 @@ function handleSubmit() {
                             name="meeting_place"
                             required
                         />
-                        <div class="flex space-x-4">
-                            <div class="w-1/2">
+                        <div class="sm:grid grid-cols-2 gap-4">
+                            <div>
                                 <TextArea
                                     v-model="form.description"
                                     class="font-mono"
@@ -103,7 +113,7 @@ function handleSubmit() {
                                     name="description"
                                 ></TextArea>
                             </div>
-                            <div class="h-full w-1/2">
+                            <div class="h-full">
                                 <div
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >

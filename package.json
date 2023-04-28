@@ -20,7 +20,9 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "feather-icons": "^4.29.0",
         "marked": "^4.3.0",
+        "vue-feather": "^2.0.0",
         "vue-spinner": "^1.0.4",
         "vuedraggable": "^4.1.0"
     }

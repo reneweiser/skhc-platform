@@ -62,6 +62,12 @@ function handleDelete() {
                                     class="px-6 py-3"
                                     scope="col"
                                 >
+                                    Sichtbarkeit
+                                </th>
+                                <th
+                                    class="px-6 py-3"
+                                    scope="col"
+                                >
                                     Zeit
                                 </th>
                                 <th
@@ -97,6 +103,27 @@ function handleDelete() {
                                 @click="handleVisit(shiftTime.shift_id)"
                                 class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
+                                <th
+                                    class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                    scope="row"
+                                >
+                                    <vue-feather
+                                        class="w-4"
+                                        v-if="
+                                            shiftTime.shift.visibility.label ===
+                                            'private'
+                                        "
+                                        type="eye-off"
+                                    ></vue-feather>
+                                    <vue-feather
+                                        class="w-4"
+                                        v-if="
+                                            shiftTime.shift.visibility.label ===
+                                            'public'
+                                        "
+                                        type="eye"
+                                    ></vue-feather>
+                                </th>
                                 <th
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     scope="row"

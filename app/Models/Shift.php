@@ -18,6 +18,11 @@ class Shift extends Model
         return $this->belongsTo(Event::class);
     }
 
+    public function visibility(): BelongsTo
+    {
+        return $this->belongsTo(Visibility::class);
+    }
+
     public function shiftTimes(): HasMany
     {
         return $this->hasMany(ShiftTime::class);
