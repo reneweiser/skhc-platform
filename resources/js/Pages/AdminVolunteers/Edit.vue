@@ -19,7 +19,9 @@ const form = useForm({
     email: props.volunteer.data.email,
     mobile: props.volunteer.data.mobile,
     shirt_size_id: props.volunteer.data.shirt_size.id,
-    selected_shifts: props.volunteer.data.selected_shifts,
+    selected_shifts: props.volunteer.data.selected_shifts.map(
+        (item) => item.id
+    ),
 });
 
 const events = groupBy(props.shifts.data, (shift) => shift.event_name);
