@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
 //            EventSeeder::class,
         ]);
 
-        Artisan::call('skhc:import-shifts');
+//        Artisan::call('skhc:import-shifts');
 
         User::factory()->create([
             'name' => 'SKHC',
             'email' => 'skhc@kulturtragwerk.de',
-            'password' => bcrypt(Str::random(50)),
+            'password' => bcrypt("password"),
         ]);
     }
 }
