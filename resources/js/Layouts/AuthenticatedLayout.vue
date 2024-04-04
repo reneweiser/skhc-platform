@@ -161,6 +161,18 @@ const showingNavigationDropdown = ref(false);
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('admin.volunteer.index')"
+                            :active="route().current('admin.volunteer.index')"
+                        >
+                            Helfer
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('shifts.index')"
+                            :active="route().current('shifts.index')"
+                        >
+                            Schichten
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
