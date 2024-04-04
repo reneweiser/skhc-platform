@@ -6,6 +6,14 @@ import Modal from '@/Components/Modal.vue';
 import {groupBy} from 'lodash';
 import {ref} from "vue";
 
+const props = defineProps({
+    token: String,
+    volunteer: Object,
+    shirtSizes: Array,
+    shifts: Object,
+    spots: Array,
+});
+
 const form = useForm({
     first_name: props.volunteer.data.first_name,
     last_name: props.volunteer.data.last_name,
@@ -13,14 +21,6 @@ const form = useForm({
     mobile: props.volunteer.data.mobile,
     shirt_size_id: props.volunteer.data.shirt_size.id,
     selected_shifts: props.volunteer.data.selected_shifts,
-});
-
-const props = defineProps({
-    token: String,
-    volunteer: Object,
-    shirtSizes: Array,
-    shifts: Object,
-    spots: Array,
 });
 
 const events = groupBy(props.shifts.data, shift => shift.event_name);
