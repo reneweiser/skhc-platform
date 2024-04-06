@@ -8,6 +8,7 @@ use App\Http\Controllers\EditTokenCreatedController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\ShiftTimeController;
 use App\Http\Controllers\VerificationRequestedController;
 use App\Http\Controllers\VerificationSuccessfulController;
 use App\Http\Controllers\VolunteerAuthenticationController;
@@ -58,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/volunteers', [AdminVolunteerController::class, 'destroyAll'])->name('admin.volunteer.destroy.all');
 
     Route::resource('admin/shifts', ShiftController::class);
+    Route::resource('/admin/shift-times', ShiftTimeController::class)->only(['index', 'update']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

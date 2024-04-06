@@ -38,6 +38,8 @@ class ImportShifts extends Command
                 'shift_id' => $shift->id,
                 'label' => $shiftData['time'],
                 'volunteers_needed' => $shiftData['volunteers_needed'],
+                'start' => now(),
+                'end' => now()->addHour(),
             ]);
         }
     }
