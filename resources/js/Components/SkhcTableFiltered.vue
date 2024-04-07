@@ -6,36 +6,39 @@ import _ from 'lodash';
 import SkhcInputRadios from '@/Components/SkhcInputRadios.vue';
 
 const props = defineProps({
-    headers: Array,
-    rows: Array,
+    hideColumns: Array,
+    records: Array,
 });
 
-const emits = defineEmits(['row-selected']);
+const emits = defineEmits(['record-selected']);
 
+const headers = computed(() => Object.keys(props.records[0]));
 const searchTerm = ref('');
-const selectedSortBy = ref(props.headers[0]);
-const selectedOrder = ref('asc');
-
-const filteredRows = computed(() =>
-    _(props.rows)
-        .filter((row) => row.join().includes(searchTerm.value))
-        .orderBy(
-            props.headers.findIndex((item) => item === selectedSortBy.value),
-            selectedOrder.value
-        )
-        .value()
-);
+const selectedSortBy = ref(headers.value[0]);
+const selectedOrder = ref('Aufsteigend');
+const orderMap = computed(() => {
+    return {
+        Aufsteigend: 'asc',
+        Absteigend: 'desc',
+    }[selectedOrder.value];
+});
+const filteredRecords = computed(() => {
+    return _(props.records)
+        .filter((record) => {
+            return Object.values(record).join().includes(searchTerm.value);
+        })
+        .orderBy(selectedSortBy.value, orderMap.value)
+        .value();
+});
 </script>
 
 <template>
     <div>
-        <div>
+        <div class="flex items-start space-x-8 mb-4">
             <SkhcSearchInput
                 class="w-96"
                 v-model="searchTerm"
             />
-        </div>
-        <div class="flex space-x-8">
             <SkhcInputRadios
                 :options="headers"
                 name="sort"
@@ -43,7 +46,7 @@ const filteredRows = computed(() =>
                 v-model="selectedSortBy"
             />
             <SkhcInputRadios
-                :options="['asc', 'desc']"
+                :options="['Aufsteigend', 'Absteigend']"
                 name="order"
                 title="Sortierung"
                 v-model="selectedOrder"
@@ -51,9 +54,8 @@ const filteredRows = computed(() =>
         </div>
 
         <SkhcTableBase
-            :headers="headers"
-            :rows="filteredRows"
-            @row-selected="(index) => emits('row-selected', index)"
+            :records="filteredRecords"
+            @record-selected="(id) => emits('record-selected', id)"
         />
     </div>
 </template>

@@ -1,12 +1,19 @@
 <script setup>
 import VueFeather from 'vue-feather';
+import { computed } from 'vue';
 
-defineProps({
-    headers: { type: Array },
-    rows: { type: Array },
+const props = defineProps({
+    hideColumns: Array,
+    records: Array,
 });
 
-const emits = defineEmits(['row-selected']);
+const emits = defineEmits(['record-selected']);
+
+const headers = computed(() => Object.keys(props.records[0]));
+
+function showColumn(column) {
+    return props.hideColumns ? !props.hideColumns.includes(column) : true;
+}
 </script>
 
 <template>
@@ -21,6 +28,7 @@ const emits = defineEmits(['row-selected']);
                             class="px-6 py-3"
                             scope="col"
                             v-for="header in headers"
+                            v-show="showColumn(header)"
                         >
                             {{ header }}
                         </th>
@@ -35,19 +43,20 @@ const emits = defineEmits(['row-selected']);
                         :class="{ 'bg-gray-50': row_index % 2 }"
                         :key="row_index"
                         class="border-b"
-                        v-for="(row, row_index) in rows"
+                        v-for="(row, row_index) in records"
                     >
                         <td
                             :key="column_index"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                            v-for="(column, column_index) in row"
+                            v-for="(value, key, column_index) in row"
+                            v-show="showColumn(key)"
                         >
-                            {{ column }}
+                            {{ value }}
                         </td>
                         <td
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                         >
-                            <button @click="emits('row-selected', row_index)">
+                            <button @click="emits('record-selected', row.id)">
                                 <VueFeather type="more-vertical" />
                             </button>
                         </td>
