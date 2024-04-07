@@ -13,7 +13,7 @@ const props = defineProps({
     shiftTime: { type: Object },
 });
 
-const emits = defineEmits(['updated']);
+const emits = defineEmits(['close', 'updated']);
 
 const groups = computed(() => {
     return props.events.map((event) => {
