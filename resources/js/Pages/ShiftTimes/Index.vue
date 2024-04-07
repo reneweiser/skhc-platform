@@ -1,11 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import SkhcShiftTimesTable from '@/Components/SkhcShiftTimesTable.vue';
+import SkhcShiftTimesTable from '@/Components/SkhcTableBase.vue';
 import Modal from '@/Components/Modal.vue';
 import { computed, ref } from 'vue';
 import SkhcShiftTimeUpdateForm from '@/Components/SkhcShiftTimeUpdateForm.vue';
 import VueFeather from 'vue-feather';
+import { shortenText } from '@/helpers';
 
 const props = defineProps({
     events: { type: Array },
@@ -24,10 +25,10 @@ const tableHeaders = [
 const tableRows = computed(() =>
     props.shiftTimes.map((item) => [
         shortenText(item.label, 25),
-        item.shift.name,
+        shortenText(item.shift.name, 25),
         item.start,
         item.end,
-        item.shift.meeting_place,
+        shortenText(item.shift.meeting_place, 25),
         item.volunteers_needed,
     ])
 );
@@ -38,11 +39,6 @@ let selectedShiftTime = null;
 function selectRow(index) {
     selectedShiftTime = props.shiftTimes[index];
     showRowModal.value = true;
-}
-
-function shortenText(text, limit) {
-    if (text.length < limit) return text;
-    return text.substring(0, limit) + '(...)';
 }
 </script>
 
