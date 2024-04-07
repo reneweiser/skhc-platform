@@ -32,24 +32,32 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('dashboard')"
                                     :active="route().current('dashboard')"
+                                    :href="route('dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('admin.volunteer.index')"
                                     :active="
                                         route().current('admin.volunteer.index')
                                     "
+                                    :href="route('admin.volunteer.index')"
                                 >
                                     Helfer
                                 </NavLink>
                                 <NavLink
-                                    :href="route('shifts.index')"
                                     :active="route().current('shifts.index')"
+                                    :href="route('shifts.index')"
                                 >
                                     Schichten
+                                </NavLink>
+                                <NavLink
+                                    :active="
+                                        route().current('shift-times.index')
+                                    "
+                                    :href="route('shift-times.index')"
+                                >
+                                    Timeslots
                                 </NavLink>
                             </div>
                         </div>
@@ -64,21 +72,21 @@ const showingNavigationDropdown = ref(false);
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button
-                                                type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                type="button"
                                             >
                                                 {{ $page.props.auth.user.name }}
 
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
                                                     fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg"
                                                 >
                                                     <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                                         clip-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        fill-rule="evenodd"
                                                     />
                                                 </svg>
                                             </button>
@@ -93,8 +101,8 @@ const showingNavigationDropdown = ref(false);
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
-                                            method="post"
                                             as="button"
+                                            method="post"
                                         >
                                             Log Out
                                         </DropdownLink>
@@ -114,8 +122,8 @@ const showingNavigationDropdown = ref(false);
                             >
                                 <svg
                                     class="h-6 w-6"
-                                    stroke="currentColor"
                                     fill="none"
+                                    stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
                                     <path
@@ -124,10 +132,10 @@ const showingNavigationDropdown = ref(false);
                                             'inline-flex':
                                                 !showingNavigationDropdown,
                                         }"
+                                        d="M4 6h16M4 12h16M4 18h16"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
                                     />
                                     <path
                                         :class="{
@@ -135,10 +143,10 @@ const showingNavigationDropdown = ref(false);
                                             'inline-flex':
                                                 showingNavigationDropdown,
                                         }"
+                                        d="M6 18L18 6M6 6l12 12"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
                                     />
                                 </svg>
                             </button>
@@ -156,22 +164,28 @@ const showingNavigationDropdown = ref(false);
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
                             :active="route().current('dashboard')"
+                            :href="route('dashboard')"
                         >
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('admin.volunteer.index')"
                             :active="route().current('admin.volunteer.index')"
+                            :href="route('admin.volunteer.index')"
                         >
                             Helfer
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('shifts.index')"
                             :active="route().current('shifts.index')"
+                            :href="route('shifts.index')"
                         >
                             Schichten
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :active="route().current('shift-times.index')"
+                            :href="route('shift-times.index')"
+                        >
+                            Timeslots
                         </ResponsiveNavLink>
                     </div>
 
@@ -192,8 +206,8 @@ const showingNavigationDropdown = ref(false);
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 :href="route('logout')"
-                                method="post"
                                 as="button"
+                                method="post"
                             >
                                 Log Out
                             </ResponsiveNavLink>
