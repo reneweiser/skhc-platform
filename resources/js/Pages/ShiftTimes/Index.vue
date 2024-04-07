@@ -13,31 +13,23 @@ const props = defineProps({
     shiftTimes: { type: Array },
 });
 
-const tableHeaders = [
-    'Bezeichnung',
-    'Schicht',
-    'Anfang',
-    'Ende',
-    'Treffpunkt',
-    'Helfer',
-];
-
-const tableRows = computed(() =>
-    props.shiftTimes.map((item) => [
-        shortenText(item.label, 25),
-        shortenText(item.shift.name, 25),
-        item.start,
-        item.end,
-        shortenText(item.shift.meeting_place, 25),
-        item.volunteers_needed,
-    ])
+const records = computed(() =>
+    props.shiftTimes.map((item) => ({
+        id: item.id,
+        Name: shortenText(item.label, 25),
+        Schicht: shortenText(item.shift.name, 25),
+        Start: item.start,
+        Ende: item.end,
+        Treffpunkt: shortenText(item.shift.meeting_place, 25),
+        Helfer: item.volunteers_needed,
+    }))
 );
 
 const showRowModal = ref(false);
 let selectedShiftTime = null;
 
-function selectRow(index) {
-    selectedShiftTime = props.shiftTimes[index];
+function selectRecord(id) {
+    selectedShiftTime = props.shiftTimes.find((item) => item.id === id);
     showRowModal.value = true;
 }
 </script>
@@ -53,9 +45,9 @@ function selectRow(index) {
         </template>
 
         <SkhcShiftTimesTable
-            :headers="tableHeaders"
-            :rows="tableRows"
-            @row-selected="selectRow"
+            :hide-columns="['id']"
+            :records="records"
+            @record-selected="selectRecord"
         />
     </AuthenticatedLayout>
 

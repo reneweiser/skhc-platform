@@ -24,13 +24,13 @@ const emits = defineEmits(['updated']);
 
 function submitForm() {
     form.put(route('shifts.update', props.shift), {
-        onSuccess: () => emits('close'),
+        onSuccess: () => emits('updated'),
     });
 }
 </script>
 
 <template>
-    <form class="p-4 flex flex-col space-y-4">
+    <form class="flex flex-col space-y-4">
         <SkhcInputSelect
             :options="visibilities"
             label="Sichtbarkeit"

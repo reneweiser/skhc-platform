@@ -43,30 +43,43 @@ const submitForm = () =>
 </script>
 
 <template>
-    <form class="p-4 flex flex-col space-y-4">
+    <form
+        @submit.prevent="submitForm"
+        class="p-4 flex flex-col space-y-4"
+    >
         <SkhcInputSelectGroup
+            :error="form.errors.shift_id"
             :groups="groups"
             label="Schicht"
+            required
             v-model="form.shift_id"
         />
 
         <SkhcInputText
+            :error="form.errors.label"
             label="Label"
+            required
             v-model="form.label"
         />
 
         <SkhcInputDateTime
+            :error="form.errors.start"
             label="Start"
+            required
             v-model="form.start"
         />
 
         <SkhcInputDateTime
+            :error="form.errors.end"
             label="End"
+            required
             v-model="form.end"
         />
 
         <SkhcInputNumber
+            :error="form.errors.volunteers_needed"
             label="Helfer"
+            required
             v-model="form.volunteers_needed"
         />
 
@@ -74,7 +87,6 @@ const submitForm = () =>
             <SkhcButtonMuted @click="emits('close')">Schließen</SkhcButtonMuted>
             <SkhcButtonPrimary
                 :disabled="form.processing"
-                @click="submitForm"
                 class="disabled:cursor-not-allowed disabled:opacity-50"
                 >Speichern</SkhcButtonPrimary
             >
