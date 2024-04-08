@@ -18,23 +18,24 @@ class ShiftTimeController extends Controller
         ]);
     }
 
-    public function store(Shift $shift): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $shift->shiftTimes()->create([
-            'label' => 'Neuer timeslot',
-            'volunteers_needed' => 1,
-            'start' => now(),
-            'end' => now()->addHour()
-        ]);
+        ShiftTime::create($request->validate([
+            'shift_id' => 'exists:shifts,id',
+            'label' => 'required|string',
+            'volunteers_needed' => 'required|numeric',
+            'start' => 'date',
+            'end' => 'date'
+        ]));
 
-        return to_route('shifts.edit', $shift);
+        return to_route('shift-times.index');
     }
 
-    public function destroy(Shift $shift, ShiftTime $shift_time): \Illuminate\Http\RedirectResponse
+    public function destroy(ShiftTime $shift_time): \Illuminate\Http\RedirectResponse
     {
         $shift_time->delete();
 
-        return to_route('shifts.edit', $shift);
+        return to_route('shift-times.index');
     }
 
     public function update(Request $request, Shift $shift, ShiftTime $shift_time): \Illuminate\Http\RedirectResponse

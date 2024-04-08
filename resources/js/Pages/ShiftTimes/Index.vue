@@ -1,12 +1,16 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import SkhcShiftTimesTable from '@/Components/SkhcTableBase.vue';
-import Modal from '@/Components/Modal.vue';
 import { computed, ref } from 'vue';
 import SkhcShiftTimeUpdateForm from '@/Components/SkhcShiftTimeUpdateForm.vue';
 import VueFeather from 'vue-feather';
 import { shortenText } from '@/helpers';
+import SkhcTableFiltered from '@/Components/SkhcTableFiltered.vue';
+import SkhcButtonPrimary from '@/Components/SkhcButtonPrimary.vue';
+import SkhcModalHeader from '@/Components/SkhcModalHeader.vue';
+import SkhcShiftTimeCreateForm from '@/Components/SkhcShiftTimeCreateForm.vue';
+import SkhcShiftTimeDeleteForm from '@/Components/SkhcShiftTimeDeleteForm.vue';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
     events: { type: Array },
@@ -25,6 +29,7 @@ const records = computed(() =>
     }))
 );
 
+const showCreateModal = ref(false);
 const showRowModal = ref(false);
 let selectedShiftTime = null;
 
@@ -44,30 +49,46 @@ function selectRecord(id) {
             </h2>
         </template>
 
-        <SkhcShiftTimesTable
+        <div class="flex justify-end mt-4">
+            <SkhcButtonPrimary @click="showCreateModal = true">
+                Timeslot erstellen
+            </SkhcButtonPrimary>
+        </div>
+
+        <SkhcTableFiltered
             :hide-columns="['id']"
             :records="records"
             @record-selected="selectRecord"
+            class="mt-4"
         />
     </AuthenticatedLayout>
+
+    <Modal
+        :show="showCreateModal"
+        @close="showCreateModal = false"
+    >
+        <SkhcModalHeader @close="showCreateModal = false" />
+        <SkhcShiftTimeCreateForm
+            :events="events"
+            @submitted="showCreateModal = false"
+        />
+    </Modal>
 
     <Modal
         :show="showRowModal"
         @close="showRowModal = false"
     >
-        <div class="flex justify-end px-2 pt-2 bg-gray-100">
-            <button @click="showRowModal = false">
-                <VueFeather
-                    size="20"
-                    type="x"
-                />
-            </button>
-        </div>
+        <SkhcModalHeader @close="showRowModal = false" />
         <SkhcShiftTimeUpdateForm
             :events="events"
             :shift-time="selectedShiftTime"
             @close="showRowModal = false"
             @updated="showRowModal = false"
+        />
+        <SkhcShiftTimeDeleteForm
+            :shift-time="selectedShiftTime"
+            @deleted="showRowModal = false"
+            class="m-4"
         />
     </Modal>
 </template>
