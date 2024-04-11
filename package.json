@@ -10,7 +10,6 @@
         "@vitejs/plugin-vue": "^4.0.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.1.2",
-        "flowbite": "^1.6.5",
         "laravel-vite-plugin": "^0.7.2",
         "lodash": "^4.17.21",
         "postcss": "^8.4.18",
@@ -24,7 +23,6 @@
         "marked": "^4.3.0",
         "prettier-plugin-organize-attributes": "^1.0.0",
         "vue-feather": "^2.0.0",
-        "vue-spinner": "^1.0.4",
-        "vuedraggable": "^4.1.0"
+        "vue-spinner": "^1.0.4"
     }
 }
