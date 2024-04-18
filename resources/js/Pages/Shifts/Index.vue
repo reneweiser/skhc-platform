@@ -11,6 +11,8 @@ import SkhcTableFiltered from '@/Components/SkhcTableFiltered.vue';
 import SkhcModalHeader from '@/Components/SkhcModalHeader.vue';
 import SkhcShiftCreateForm from '@/Components/SkhcShiftCreateForm.vue';
 import SkhcShiftDeleteForm from '@/Components/SkhcShiftDeleteForm.vue';
+import DataTable from '@/Skhc/DataTable.vue';
+import Column from '@/Skhc/Column.vue';
 
 const props = defineProps({
     shifts: Array,
@@ -25,10 +27,10 @@ let selectedShift = null;
 const records = computed(() =>
     props.shifts.map((item) => ({
         id: item.id,
-        Name: shortenText(item.name, 25),
-        Treffpunkt: shortenText(item.meeting_place, 25),
-        Event: shortenText(item.event.name, 25),
-        Sichbarkeit: item.visibility.label,
+        name: shortenText(item.name, 25),
+        meeting_place: shortenText(item.meeting_place, 25),
+        event: shortenText(item.event.name, 25),
+        visibility: item.visibility.label,
     }))
 );
 
@@ -61,11 +63,39 @@ function selectRecord(id) {
             </SkhcButtonPrimary>
         </div>
 
-        <SkhcTableFiltered
-            :records="records"
-            @record-selected="selectRecord"
-            class="mt-4"
-        />
+        <DataTable
+            :rows="records"
+            class="mt-4 sm:mt-2"
+            searchable
+            sortable
+        >
+            <Column
+                field="name"
+                header="Name"
+            />
+            <Column
+                field="meeting_place"
+                header="Treffpunkt"
+            />
+            <Column
+                field="event"
+                header="Event"
+            />
+            <Column
+                field="visibility"
+                header="Sichtbarkeit"
+            />
+
+            <template #row="{ row }">
+                <button
+                    @click="selectRecord(row.id)"
+                    class="px-6 py-4"
+                    type="button"
+                >
+                    <VueFeather type="more-vertical" />
+                </button>
+            </template>
+        </DataTable>
     </AuthenticatedLayout>
 
     <Modal

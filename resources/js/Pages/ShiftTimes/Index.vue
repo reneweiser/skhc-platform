@@ -5,12 +5,13 @@ import { computed, ref } from 'vue';
 import SkhcShiftTimeUpdateForm from '@/Components/SkhcShiftTimeUpdateForm.vue';
 import VueFeather from 'vue-feather';
 import { shortenText } from '@/helpers';
-import SkhcTableFiltered from '@/Components/SkhcTableFiltered.vue';
 import SkhcButtonPrimary from '@/Components/SkhcButtonPrimary.vue';
 import SkhcModalHeader from '@/Components/SkhcModalHeader.vue';
 import SkhcShiftTimeCreateForm from '@/Components/SkhcShiftTimeCreateForm.vue';
 import SkhcShiftTimeDeleteForm from '@/Components/SkhcShiftTimeDeleteForm.vue';
 import Modal from '@/Components/Modal.vue';
+import DataTable from '@/Skhc/DataTable.vue';
+import Column from '@/Skhc/Column.vue';
 
 const props = defineProps({
     events: { type: Array },
@@ -20,12 +21,12 @@ const props = defineProps({
 const records = computed(() =>
     props.shiftTimes.map((item) => ({
         id: item.id,
-        Name: shortenText(item.label, 25),
-        Schicht: shortenText(item.shift.name, 25),
-        Start: item.start,
-        Ende: item.end,
-        Treffpunkt: shortenText(item.shift.meeting_place, 25),
-        Helfer: item.volunteers_needed,
+        name: shortenText(item.label, 25),
+        shift: shortenText(item.shift.name, 25),
+        start: item.start,
+        end: item.end,
+        meeting_place: shortenText(item.shift.meeting_place, 25),
+        volunteers: item.volunteers_needed,
     }))
 );
 
@@ -55,12 +56,47 @@ function selectRecord(id) {
             </SkhcButtonPrimary>
         </div>
 
-        <SkhcTableFiltered
-            :hide-columns="['id']"
-            :records="records"
-            @record-selected="selectRecord"
-            class="mt-4"
-        />
+        <DataTable
+            :rows="records"
+            class="mt-4 sm:mt-2"
+            searchable
+            sortable
+        >
+            <Column
+                field="shift"
+                header="Schicht"
+            />
+            <Column
+                field="start"
+                header="Anfang"
+            />
+            <Column
+                field="end"
+                header="Ende"
+            />
+            <Column
+                field="name"
+                header="Kommentar"
+            />
+            <Column
+                field="meeting_place"
+                header="Treffpunkt"
+            />
+            <Column
+                field="volunteers"
+                header="Helfer"
+            />
+
+            <template #row="{ row }">
+                <button
+                    @click="selectRecord(row.id)"
+                    class="px-6 py-4"
+                    type="button"
+                >
+                    <VueFeather type="more-vertical" />
+                </button>
+            </template>
+        </DataTable>
     </AuthenticatedLayout>
 
     <Modal

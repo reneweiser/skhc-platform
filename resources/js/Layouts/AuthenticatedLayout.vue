@@ -39,9 +39,9 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 <NavLink
                                     :active="
-                                        route().current('admin.volunteer.index')
+                                        route().current('volunteers.index')
                                     "
-                                    :href="route('admin.volunteer.index')"
+                                    :href="route('volunteers.index')"
                                 >
                                     Helfer
                                 </NavLink>
@@ -170,8 +170,8 @@ const showingNavigationDropdown = ref(false);
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :active="route().current('admin.volunteer.index')"
-                            :href="route('admin.volunteer.index')"
+                            :active="route().current('volunteers.index')"
+                            :href="route('volunteers.index')"
                         >
                             Helfer
                         </ResponsiveNavLink>
@@ -221,7 +221,7 @@ const showingNavigationDropdown = ref(false);
                 class="bg-white shadow"
                 v-if="$slots.header"
             >
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-0">
                     <slot name="header" />
                 </div>
             </header>

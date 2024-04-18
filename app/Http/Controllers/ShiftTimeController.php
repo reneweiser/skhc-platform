@@ -24,7 +24,7 @@ class ShiftTimeController extends Controller
             'shift_id' => 'exists:shifts,id',
             'label' => 'required|string',
             'volunteers_needed' => 'required|numeric',
-            'start' => 'date',
+            'start' => 'required|date',
             'end' => 'date'
         ]));
 
@@ -44,7 +44,7 @@ class ShiftTimeController extends Controller
             'label' => 'required|string',
             'volunteers_needed' => 'required|numeric',
             'start' => 'required|date',
-            'end' => 'required|date',
+            'end' => 'date|nullable',
             'shift_id' => 'exists:shifts,id'
         ]));
 
