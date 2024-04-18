@@ -72,7 +72,6 @@ const submitForm = () =>
         <SkhcInputDateTime
             :error="form.errors.end"
             label="End"
-            required
             v-model="form.end"
         />
 

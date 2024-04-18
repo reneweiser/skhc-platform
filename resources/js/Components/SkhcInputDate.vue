@@ -1,29 +1,25 @@
 <script setup>
 const props = defineProps({
     label: { type: String },
-    options: { type: Array },
-    required: { type: Boolean, default: false },
     error: { type: String },
+    required: { type: Boolean, default: false },
+    min: { type: String },
+    max: { type: String },
 });
-const model = defineModel({ type: [Number, String] });
+const model = defineModel({ type: String });
 </script>
 
 <template>
     <label class="block text-sm font-medium text-gray-900">
         {{ label }}
-        <select
+        <input
+            :max="max"
+            :min="min"
             :required="required"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            type="date"
             v-model="model"
-        >
-            <option
-                :key="option.id"
-                :value="option.id"
-                v-for="option in options"
-            >
-                {{ option.name }}
-            </option>
-        </select>
+        />
         <span
             class="block text-red-400 text-sm"
             v-if="error"
