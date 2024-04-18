@@ -25,7 +25,7 @@ class ShiftTimeController extends Controller
             'label' => 'required|string',
             'volunteers_needed' => 'required|numeric',
             'start' => 'required|date',
-            'end' => 'date'
+            'end' => 'nullable|date',
         ]));
 
         return to_route('shift-times.index');
@@ -41,11 +41,11 @@ class ShiftTimeController extends Controller
     public function update(Request $request, Shift $shift, ShiftTime $shift_time): \Illuminate\Http\RedirectResponse
     {
         $shift_time->update($request->validate([
+            'shift_id' => 'exists:shifts,id',
             'label' => 'required|string',
             'volunteers_needed' => 'required|numeric',
             'start' => 'required|date',
-            'end' => 'date|nullable',
-            'shift_id' => 'exists:shifts,id'
+            'end' => 'nullable|date',
         ]));
 
         return to_route('shift-times.index', $shift);
