@@ -8,6 +8,8 @@ window._ = _;
  */
 
 import axios from 'axios';
+import moment from 'moment';
+import 'moment/dist/locale/de';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -33,3 +35,5 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+
+moment.locale('de');
